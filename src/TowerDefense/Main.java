@@ -9,7 +9,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         MainWindow gameWindow = new MainWindow();
         primaryStage = gameWindow.getState();
-        primaryStage.setTitle("Tower Defense");
+        primaryStage.setTitle(Config.GAME_NAME);
         primaryStage.show();
     }
 
