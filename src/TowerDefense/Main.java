@@ -7,8 +7,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        MainWindow gameWindow = new MainWindow();
+        GameStage gameWindow = new GameStage();
         primaryStage = gameWindow.getState();
+        primaryStage.setResizable(false);
         primaryStage.setTitle(Config.GAME_NAME);
         primaryStage.show();
     }
