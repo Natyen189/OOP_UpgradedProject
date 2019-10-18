@@ -1,14 +1,15 @@
-package TowerDefense;
+package TowerDefense.Button;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 
 public class GameButton extends Button {
 
-    private String BUTTON_STYLE = "-fx-background-color: transparent";
+    protected String BUTTON_STYLE = "-fx-background-color: transparent";
 
     public GameButton(String imageLocation, Node buttonImage) {
         super(imageLocation, buttonImage);
@@ -22,7 +23,7 @@ public class GameButton extends Button {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                setEffect(new DropShadow());
+                setEffect(new Glow());
             }
         });
 
@@ -30,7 +31,7 @@ public class GameButton extends Button {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                setEffect(null);
+                setEffect(new DropShadow());
             }
         });
     }

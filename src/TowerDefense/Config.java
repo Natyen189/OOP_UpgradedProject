@@ -38,15 +38,19 @@ public final class Config {
     /**
      * Size of the menu screen.
      */
-    public static final int MENU_WIDTH = 138*2;
+    public static final int MENU_WIDTH = 300;
+    /**
+     * Size of the menu screen.
+     */
+    public static final int MENU_HEIGHT = 100;
     /**
      * Size of the screen.
      */
-    public static final int SCREEN_WIDTH = TILE_SIZE * TILE_HORIZONTAL;
+    public static final int SCREEN_WIDTH = TILE_SIZE * TILE_HORIZONTAL + MENU_WIDTH;
     /**
      * Size of the screen.
      */
-    public static final int SCREEN_HEIGHT = TILE_SIZE * TILE_VERTICAL;
+    public static final int SCREEN_HEIGHT = TILE_SIZE * TILE_VERTICAL + MENU_HEIGHT;
 
 
     //Other config related to other entities in the game.
