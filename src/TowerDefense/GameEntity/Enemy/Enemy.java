@@ -48,18 +48,21 @@ public class Enemy extends GameEntity {
     @Override
     public void move() {
 
-        Line test = new Line();
-        test.setStartX(0);
-        test.setStartY(318);
-        test.setEndX(900);
-        test.setEndY(318);
+        Path movePath = new Path();
+        movePath.getElements().add(new MoveTo(0,318));
+        movePath.getElements().add(new HLineTo(256));
+        movePath.getElements().add(new VLineTo(574));
+        movePath.getElements().add(new HLineTo(640));
+        movePath.getElements().add(new VLineTo(126));
+        movePath.getElements().add(new HLineTo(960));
 
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setDuration(Duration.millis(15000));
         pathTransition.setNode(enemyImage);
-        pathTransition.setPath(test);
+        pathTransition.setPath(movePath);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(Animation.INDEFINITE);
-        pathTransition.setAutoReverse(true);
+        pathTransition.setAutoReverse(false);
 
         pathTransition.play();
 

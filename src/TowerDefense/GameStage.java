@@ -95,7 +95,7 @@ public class GameStage {
     }
 
     private void createEnemy() {
-        Enemy test = new Enemy(GameEntity.EnemyType.NormalEnemy);
+        Enemy test = new Enemy(GameEntity.EnemyType.BossEnemy);
         mainWindow.getChildren().add(test);
     }
 
