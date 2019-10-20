@@ -3,6 +3,9 @@ package TowerDefense;
 import TowerDefense.Button.GameButton;
 import TowerDefense.Button.MenuButton;
 import TowerDefense.Button.TowerButton;
+import TowerDefense.GameEntity.Enemy.Enemy;
+import TowerDefense.GameEntity.GameEntity;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -28,6 +31,8 @@ public class GameStage {
         gameStage.setScene(scene);
         setBackgroundImage();
         createButton();
+        createEnemy();
+
     }
 
     public Stage getState() {
@@ -87,6 +92,11 @@ public class GameStage {
         button.get(4).setLayoutX(startXPos + 150*2);
         button.get(4).setLayoutY(startYPos + 110);
 
+    }
+
+    private void createEnemy() {
+        Enemy test = new Enemy(GameEntity.EnemyType.NormalEnemy);
+        mainWindow.getChildren().add(test);
     }
 
 }
