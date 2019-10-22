@@ -3,9 +3,11 @@ package TowerDefense.GameEntity.Enemy;
 import TowerDefense.GameEntity.GameEntity;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
@@ -14,8 +16,8 @@ import java.io.File;
 
 public class Enemy extends GameEntity {
 
-    private double startXPos = 0;
-    private double startYPos = 200;
+    protected double speed;
+    protected int value;
 
     public Enemy(EnemyType type) {
         loadImage(type);
@@ -57,13 +59,12 @@ public class Enemy extends GameEntity {
         movePath.getElements().add(new HLineTo(960));
 
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(15000));
+        pathTransition.setDuration(Duration.millis(25000));
         pathTransition.setNode(enemyImage);
         pathTransition.setPath(movePath);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(Animation.INDEFINITE);
         pathTransition.setAutoReverse(false);
-
         pathTransition.play();
 
     }
@@ -71,6 +72,10 @@ public class Enemy extends GameEntity {
     @Override
     public boolean isDestroy() {
         return health == 0;
+    }
+
+    public void onDestroy() {
+        this.getChildren().remove(enemyImage);
     }
 
 

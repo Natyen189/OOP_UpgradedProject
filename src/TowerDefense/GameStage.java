@@ -5,7 +5,11 @@ import TowerDefense.Button.MenuButton;
 import TowerDefense.Button.TowerButton;
 import TowerDefense.GameEntity.Enemy.Enemy;
 import TowerDefense.GameEntity.GameEntity;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -13,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -95,8 +100,14 @@ public class GameStage {
     }
 
     private void createEnemy() {
-        Enemy test = new Enemy(GameEntity.EnemyType.BossEnemy);
-        mainWindow.getChildren().add(test);
-    }
+        ArrayList<Enemy> test = new ArrayList<>();
 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            test.add(new Enemy(GameEntity.EnemyType.NormalEnemy));
+            mainWindow.getChildren().add(test.get(test.size() - 1));
+
+        }));
+        timeline.setCycleCount(10);
+        timeline.play();
+    }
 }
