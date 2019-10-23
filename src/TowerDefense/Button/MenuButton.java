@@ -1,5 +1,7 @@
 package TowerDefense.Button;
 
+import TowerDefense.GameEntity.Enemy.EnemySpawner;
+import javafx.animation.Animation;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -13,12 +15,10 @@ public class MenuButton extends GameButton {
 
     public void setMouseOnClick() {
 
-        setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                setDisable(true);
-                setOpacity(0);
-            }
+        setOnMouseClicked(mouseEvent -> {
+            setDisable(true);
+            setOpacity(0);
+            EnemySpawner.timeline.play();
         });
     }
 }

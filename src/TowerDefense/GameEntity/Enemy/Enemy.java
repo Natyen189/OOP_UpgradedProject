@@ -1,5 +1,6 @@
 package TowerDefense.GameEntity.Enemy;
 
+import TowerDefense.Button.MenuButton;
 import TowerDefense.GameEntity.GameEntity;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
@@ -57,14 +58,20 @@ public class Enemy extends GameEntity {
         movePath.getElements().add(new HLineTo(640));
         movePath.getElements().add(new VLineTo(126));
         movePath.getElements().add(new HLineTo(960));
+//        movePath.getElements().add(new VLineTo(-20));
+//        movePath.getElements().add(new HLineTo(-200));
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(25000));
         pathTransition.setNode(enemyImage);
         pathTransition.setPath(movePath);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Animation.INDEFINITE);
+        pathTransition.setCycleCount(0);
         pathTransition.setAutoReverse(false);
+        pathTransition.setOnFinished(actionEvent -> {
+            onDestroy();
+            System.out.println("Done.");
+        });
         pathTransition.play();
 
     }

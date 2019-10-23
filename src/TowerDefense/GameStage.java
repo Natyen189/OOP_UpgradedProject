@@ -4,6 +4,7 @@ import TowerDefense.Button.GameButton;
 import TowerDefense.Button.MenuButton;
 import TowerDefense.Button.TowerButton;
 import TowerDefense.GameEntity.Enemy.Enemy;
+import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
@@ -100,14 +101,7 @@ public class GameStage {
     }
 
     private void createEnemy() {
-        ArrayList<Enemy> test = new ArrayList<>();
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            test.add(new Enemy(GameEntity.EnemyType.NormalEnemy));
-            mainWindow.getChildren().add(test.get(test.size() - 1));
-
-        }));
-        timeline.setCycleCount(10);
-        timeline.play();
+        EnemySpawner normalEnemy = new EnemySpawner(5, GameEntity.EnemyType.NormalEnemy);
+        mainWindow.getChildren().add(normalEnemy);
     }
 }
