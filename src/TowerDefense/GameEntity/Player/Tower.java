@@ -1,32 +1,34 @@
-package TowerDefense.Button;
+package TowerDefense.GameEntity.Player;
 
+import TowerDefense.Button.TowerButton;
 import TowerDefense.GameEntity.GameEntity;
-import TowerDefense.GameEntity.Player.Tower;
-import TowerDefense.GameStage;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.ArrayList;
 
-public class TowerButton extends GameEntity {
+public class Tower extends GameEntity {
+    private int TowerValue;
+    private int TowerLevel;
+    private boolean draggable;
 
-    private TowerType towerType;
-
-    public TowerButton(GameEntity.TowerType towerType) {
-        this.towerType = towerType;
+    public Tower(TowerType towerType) {
+        draggable = true;
         loadImage(towerType);
         this.getChildren().add(image);
         setMouse();
-        spawnTower();
+        DragTower();
+        move();
     }
 
     public void loadImage(TowerType type) {
@@ -44,11 +46,6 @@ public class TowerButton extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
         }
-    }
-
-    @Override
-    public boolean isDestroy() {
-        return false;
     }
 
     void setMouse() {
@@ -70,12 +67,23 @@ public class TowerButton extends GameEntity {
         });
     }
 
-    void spawnTower() {
-        setOnMouseClicked(event-> {
-            Tower tower = new Tower(towerType);
-            tower.setLayoutX(event.getSceneX());
-            tower.setLayoutY(event.getSceneY());
-            GameStage.mainWindow.getChildren().add(tower);
+    void DragTower() {
+
+        setOnMouseDragged(event -> {
+            if(draggable) {
+                this.setLayoutX(event.getSceneX());
+                this.setLayoutY(event.getSceneY());
+            }
         });
+
+        setOnMouseReleased(event -> {
+            System.out.println("Drag Complete.");
+            draggable = false;
+        });
+    }
+
+    @Override
+    public boolean isDestroy() {
+        return false;
     }
 }

@@ -22,6 +22,6 @@ public class EnemySpawner extends AnchorPane {
         }));
 
         timeline.setCycleCount(numberOfEnemySpawned);
-        timeline.pause();
+        timeline.stop();
     }
 }

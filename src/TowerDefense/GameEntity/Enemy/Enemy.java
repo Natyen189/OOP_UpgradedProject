@@ -1,15 +1,9 @@
 package TowerDefense.GameEntity.Enemy;
 
-import TowerDefense.Button.MenuButton;
 import TowerDefense.GameEntity.GameEntity;
-import javafx.animation.Animation;
 import javafx.animation.PathTransition;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
 
@@ -22,28 +16,29 @@ public class Enemy extends GameEntity {
 
     public Enemy(EnemyType type) {
         loadImage(type);
-        this.getChildren().add(enemyImage);
+        this.getChildren().add(image);
         move();
     }
 
-    @Override
     public void loadImage(EnemyType type) {
         switch (type) {
             case NormalEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\1.png");
-                enemyImage = new ImageView(new Image(imageLocation.toURI().toString()));
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case TankerEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\2.png");
-                enemyImage = new ImageView(new Image(imageLocation.toURI().toString()));
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case SmallerEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\3.png");
-                enemyImage = new ImageView(new Image(imageLocation.toURI().toString()));
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case BossEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\4.png");
-                enemyImage = new ImageView(new Image(imageLocation.toURI().toString()));
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
+                image.setFitHeight(200);
+                image.setFitWidth(200);
                 break;
         }
     }
@@ -63,14 +58,14 @@ public class Enemy extends GameEntity {
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(25000));
-        pathTransition.setNode(enemyImage);
+        pathTransition.setNode(image);
         pathTransition.setPath(movePath);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(0);
         pathTransition.setAutoReverse(false);
         pathTransition.setOnFinished(actionEvent -> {
             onDestroy();
-            System.out.println("Done.");
+            System.out.println("Enemy removed.");
         });
         pathTransition.play();
 
@@ -82,7 +77,8 @@ public class Enemy extends GameEntity {
     }
 
     public void onDestroy() {
-        this.getChildren().remove(enemyImage);
+        this.getChildren().remove(image);
+        image = null;
     }
 
 

@@ -6,6 +6,7 @@ import TowerDefense.Button.TowerButton;
 import TowerDefense.GameEntity.Enemy.Enemy;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.Tower;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 public class GameStage {
 
-    private AnchorPane mainWindow;
+    public static AnchorPane mainWindow;
     private Scene scene;
     private Stage gameStage;
 
@@ -68,40 +69,68 @@ public class GameStage {
     }
 
     private void createTowerButton() {
-        ArrayList<File> file = new ArrayList<>();
-        ArrayList<TowerButton> button = new ArrayList<>();
-        ArrayList<ImageView> buttonImage = new ArrayList<>();
 
-        file.add(new File("Asset\\TowerTile\\1.png"));
-        file.add(new File("Asset\\TowerTile\\2.png"));
-        file.add(new File("Asset\\TowerTile\\3.png"));
-        file.add(new File("Asset\\TowerTile\\4.png"));
-        file.add(new File("Asset\\TowerTile\\5.png"));
-
-        double startXPos = 1007;
+        double startXPos = 1015;
         double startYPos = 25;
 
-        for (int i = 0; i < file.size(); i++) {
-            buttonImage.add(new ImageView(file.get(i).toURI().toString()));
-            button.add(new TowerButton("", buttonImage.get(i)));
-            mainWindow.getChildren().add(button.get(i));
-        }
+        TowerButton tower1 = new TowerButton(GameEntity.TowerType.NormalTower);
+        TowerButton tower2 = new TowerButton(GameEntity.TowerType.SniperTower);
+        TowerButton tower3 = new TowerButton(GameEntity.TowerType.MachineGunTower);
+        TowerButton tower4 = new TowerButton(GameEntity.TowerType.NormalTower);
+        TowerButton tower5 = new TowerButton(GameEntity.TowerType.SniperTower);
+        TowerButton tower6 = new TowerButton(GameEntity.TowerType.MachineGunTower);
 
-        button.get(0).setLayoutX(startXPos);
-        button.get(0).setLayoutY(startYPos);
-        button.get(1).setLayoutX(startXPos + 150);
-        button.get(1).setLayoutY(startYPos);
-        button.get(2).setLayoutX(startXPos);
-        button.get(2).setLayoutY(startYPos + 110);
-        button.get(3).setLayoutX(startXPos + 150);
-        button.get(3).setLayoutY(startYPos + 110);
-        button.get(4).setLayoutX(startXPos + 150*2);
-        button.get(4).setLayoutY(startYPos + 110);
+        tower1.setLayoutX(startXPos);
+        tower1.setLayoutY(startYPos);
 
+        tower2.setLayoutX(startXPos + 150);
+        tower2.setLayoutY(startYPos);
+
+        tower3.setLayoutX(startXPos);
+        tower3.setLayoutY(startYPos + 110);
+
+        tower4.setLayoutX(startXPos + 150);
+        tower4.setLayoutY(startYPos + 110);
+
+        tower5.setLayoutX(startXPos);
+        tower5.setLayoutY(startYPos + 110*2);
+
+        tower6.setLayoutX(startXPos + 150);
+        tower6.setLayoutY(startYPos + 110*2);
+
+        mainWindow.getChildren().add(tower1);
+        mainWindow.getChildren().add(tower2);
+        mainWindow.getChildren().add(tower3);
+        mainWindow.getChildren().add(tower4);
+        mainWindow.getChildren().add(tower5);
+        mainWindow.getChildren().add(tower6);
     }
 
-    private void createEnemy() {
-        EnemySpawner normalEnemy = new EnemySpawner(5, GameEntity.EnemyType.NormalEnemy);
+    public void createEnemy() {
+
+//        switch (LevelManagement.getLevel()) {
+//            case 1:
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                break;
+//            case 4:
+//                break;
+//            case 5:
+//                break;
+//            case 6:
+//                break;
+//            case 7:
+//                break;
+//            case 8:
+//                break;
+//            case 9:
+//                break;
+//            case 10:
+//                break;
+//        }
+        EnemySpawner normalEnemy = new EnemySpawner(5, GameEntity.EnemyType.TankerEnemy);
         mainWindow.getChildren().add(normalEnemy);
     }
 }
