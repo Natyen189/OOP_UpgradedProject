@@ -47,15 +47,16 @@ public class Enemy extends GameEntity {
     public void move() {
 
         Path movePath = new Path();
+
+        /*HLineTo: Đi theo trục hoành, VLineTo: Đi theo trục tung*/
         movePath.getElements().add(new MoveTo(0,318));
         movePath.getElements().add(new HLineTo(256));
         movePath.getElements().add(new VLineTo(574));
         movePath.getElements().add(new HLineTo(640));
         movePath.getElements().add(new VLineTo(126));
         movePath.getElements().add(new HLineTo(960));
-//        movePath.getElements().add(new VLineTo(-20));
-//        movePath.getElements().add(new HLineTo(-200));
 
+        /*Tạo đường đi dựa trên Path đã khai báo ở trên cho quân địch*/
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(25000));
         pathTransition.setNode(image);
@@ -63,6 +64,7 @@ public class Enemy extends GameEntity {
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(0);
         pathTransition.setAutoReverse(false);
+        /*Quân địch khi đi đến cuối path sẽ bị hủy*/
         pathTransition.setOnFinished(actionEvent -> {
             onDestroy();
             System.out.println("Enemy removed.");

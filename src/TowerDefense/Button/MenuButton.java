@@ -1,7 +1,6 @@
 package TowerDefense.Button;
 
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
-import TowerDefense.LevelManagement;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -16,6 +15,7 @@ public class MenuButton extends GameButton {
 
     public void setMouseOnClick() {
 
+        /*Gọi quân địch và ẩn nút "Play" khi ấn chuột vào*/
         setOnMouseClicked(mouseEvent -> {
             setDisable(true);
             setOpacity(0);

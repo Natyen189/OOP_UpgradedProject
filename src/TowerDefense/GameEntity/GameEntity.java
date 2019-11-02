@@ -1,6 +1,5 @@
 package TowerDefense.GameEntity;
 
-import TowerDefense.GameEntity.Player.Tower;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -11,6 +10,8 @@ public abstract class GameEntity extends VBox {
     protected ImageView image;
     protected File imageLocation;
     protected int health;
+    protected double posX;
+    protected double posY;
 
     public enum EnemyType {
         NormalEnemy,
@@ -22,7 +23,11 @@ public abstract class GameEntity extends VBox {
     public enum TowerType {
         NormalTower,
         SniperTower,
-        MachineGunTower
+        MachineGunTower,
+        UnnamedTower,
+        IceTurret,
+        RayTower
+
     }
 
     public void loadImage() {

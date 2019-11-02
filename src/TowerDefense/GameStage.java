@@ -1,20 +1,14 @@
 package TowerDefense;
 
-import TowerDefense.Button.GameButton;
 import TowerDefense.Button.MenuButton;
 import TowerDefense.Button.TowerButton;
-import TowerDefense.GameEntity.Enemy.Enemy;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
-import TowerDefense.GameEntity.Player.Tower;
+import TowerDefense.GameTile.Road;
 import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -22,8 +16,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class GameStage {
 
@@ -38,8 +30,8 @@ public class GameStage {
         gameStage.setScene(scene);
         setBackgroundImage();
         createButton();
+        createRoad();
         createEnemy();
-
     }
 
     public Stage getState() {
@@ -76,9 +68,9 @@ public class GameStage {
         TowerButton tower1 = new TowerButton(GameEntity.TowerType.NormalTower);
         TowerButton tower2 = new TowerButton(GameEntity.TowerType.SniperTower);
         TowerButton tower3 = new TowerButton(GameEntity.TowerType.MachineGunTower);
-        TowerButton tower4 = new TowerButton(GameEntity.TowerType.NormalTower);
-        TowerButton tower5 = new TowerButton(GameEntity.TowerType.SniperTower);
-        TowerButton tower6 = new TowerButton(GameEntity.TowerType.MachineGunTower);
+        TowerButton tower4 = new TowerButton(GameEntity.TowerType.UnnamedTower);
+        TowerButton tower5 = new TowerButton(GameEntity.TowerType.RayTower);
+        TowerButton tower6 = new TowerButton(GameEntity.TowerType.IceTurret);
 
         tower1.setLayoutX(startXPos);
         tower1.setLayoutY(startYPos);
@@ -108,29 +100,19 @@ public class GameStage {
 
     public void createEnemy() {
 
-//        switch (LevelManagement.getLevel()) {
-//            case 1:
-//                break;
-//            case 2:
-//                break;
-//            case 3:
-//                break;
-//            case 4:
-//                break;
-//            case 5:
-//                break;
-//            case 6:
-//                break;
-//            case 7:
-//                break;
-//            case 8:
-//                break;
-//            case 9:
-//                break;
-//            case 10:
-//                break;
-//        }
-        EnemySpawner normalEnemy = new EnemySpawner(5, GameEntity.EnemyType.TankerEnemy);
-        mainWindow.getChildren().add(normalEnemy);
+        EnemySpawner bossEnemy = new EnemySpawner(1, GameEntity.EnemyType.BossEnemy);
+        mainWindow.getChildren().add(bossEnemy);
+
+        Timeline test  = new Timeline(new KeyFrame(Duration.seconds(10), event-> {
+            EnemySpawner normalEnemy = new EnemySpawner(5, GameEntity.EnemyType.NormalEnemy);
+            mainWindow.getChildren().add(normalEnemy);
+            EnemySpawner.timeline.play();
+        }));
+        test.setCycleCount(Animation.INDEFINITE);
+        test.play();
+    }
+
+    public void createRoad() {
+        Road roadPath = new Road();
     }
 }

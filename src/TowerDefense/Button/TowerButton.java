@@ -1,19 +1,13 @@
 package TowerDefense.Button;
 
 import TowerDefense.GameEntity.GameEntity;
-import TowerDefense.GameEntity.Player.Tower;
+import TowerDefense.GameTile.Tower;
 import TowerDefense.GameStage;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
 
 import java.io.File;
 
@@ -41,6 +35,18 @@ public class TowerButton extends GameEntity {
                 break;
             case MachineGunTower:
                 imageLocation = new File("Asset\\TowerTile\\3.png");
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
+                break;
+            case UnnamedTower:
+                imageLocation = new File("Asset\\TowerTile\\4.png");
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
+                break;
+            case RayTower:
+                imageLocation = new File("Asset\\TowerTile\\5.png");
+                image = new ImageView(new Image(imageLocation.toURI().toString()));
+                break;
+            case IceTurret:
+                imageLocation = new File("Asset\\TowerTile\\6.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
         }
