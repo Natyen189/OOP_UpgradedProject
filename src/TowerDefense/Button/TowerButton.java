@@ -78,10 +78,12 @@ public class TowerButton extends GameEntity {
 
     void spawnTower() {
         setOnMouseClicked(event-> {
-            Tower tower = new Tower(towerType);
-            tower.setLayoutX(event.getSceneX());
-            tower.setLayoutY(event.getSceneY());
-            GameStage.mainWindow.getChildren().add(tower);
+            if(MenuButton.startGame) {
+                Tower tower = new Tower(towerType);
+                tower.setLayoutX(event.getSceneX());
+                tower.setLayoutY(event.getSceneY());
+                GameStage.mainWindow.getChildren().add(tower);
+            }
         });
     }
 }

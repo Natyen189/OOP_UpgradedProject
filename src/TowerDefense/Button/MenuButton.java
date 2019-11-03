@@ -8,6 +8,8 @@ import javafx.scene.input.MouseEvent;
 
 public class MenuButton extends GameButton {
 
+    static public boolean startGame = false;
+
     public MenuButton(String imageLocation, Node buttonImage) {
         super(imageLocation, buttonImage);
         setMouseOnClick();
@@ -19,7 +21,7 @@ public class MenuButton extends GameButton {
         setOnMouseClicked(mouseEvent -> {
             setDisable(true);
             setOpacity(0);
-            EnemySpawner.timeline.play();
+            startGame = true;
         });
     }
 }

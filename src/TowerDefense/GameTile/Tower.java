@@ -124,7 +124,7 @@ public class Tower extends GameEntity {
     private boolean checkCollision() {
         for(int i = 0; i < Road.roadPath.length; i++) {
             if(this.getBoundsInParent().intersects(Road.roadPath[i].getBoundsInParent())) {
-                System.out.println("Collide with road.");
+                System.out.println("Can't place tower on road.");
                 return true;
             }
         }

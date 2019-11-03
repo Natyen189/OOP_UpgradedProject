@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GameStage {
 
@@ -99,14 +101,20 @@ public class GameStage {
     }
 
     public void createEnemy() {
+        Random random = new Random();
+        GameEntity.EnemyType [] enemyType = GameEntity.EnemyType.values();
 
-        EnemySpawner bossEnemy = new EnemySpawner(1, GameEntity.EnemyType.BossEnemy);
-        mainWindow.getChildren().add(bossEnemy);
-
+        /*Gọi quân địch*/
         Timeline test  = new Timeline(new KeyFrame(Duration.seconds(10), event-> {
-            EnemySpawner normalEnemy = new EnemySpawner(5, GameEntity.EnemyType.NormalEnemy);
-            mainWindow.getChildren().add(normalEnemy);
-            EnemySpawner.timeline.play();
+            if(MenuButton.startGame) {
+                /*Tạo quân địch ngẫu nhiên*/
+                int randomNumber = (int) (Math.random()*11);
+                GameEntity.EnemyType randomEnemy = enemyType[random.nextInt(enemyType.length)];
+                EnemySpawner normalEnemy = new EnemySpawner(randomNumber, randomEnemy);
+                System.out.println("Enemy: " + randomEnemy + ", Size: " + randomNumber);
+                mainWindow.getChildren().add(normalEnemy);
+                EnemySpawner.timeline.play();
+            }
         }));
         test.setCycleCount(Animation.INDEFINITE);
         test.play();

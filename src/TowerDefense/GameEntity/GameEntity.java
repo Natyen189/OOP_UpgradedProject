@@ -27,7 +27,6 @@ public abstract class GameEntity extends VBox {
         UnnamedTower,
         IceTurret,
         RayTower
-
     }
 
     public void loadImage() {
