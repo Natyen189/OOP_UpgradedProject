@@ -10,8 +10,8 @@ public abstract class GameEntity extends VBox {
     protected ImageView image;
     protected File imageLocation;
     protected int health;
-    protected double posX;
-    protected double posY;
+    protected static double xPos;
+    protected static double yPos;
 
     public enum EnemyType {
         NormalEnemy,

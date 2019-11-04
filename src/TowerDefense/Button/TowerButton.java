@@ -1,7 +1,7 @@
 package TowerDefense.Button;
 
 import TowerDefense.GameEntity.GameEntity;
-import TowerDefense.GameTile.Tower;
+import TowerDefense.GameTile.Tower.Tower;
 import TowerDefense.GameStage;
 import javafx.event.EventHandler;
 import javafx.scene.effect.Glow;
@@ -83,6 +83,7 @@ public class TowerButton extends GameEntity {
                 tower.setLayoutX(event.getSceneX());
                 tower.setLayoutY(event.getSceneY());
                 GameStage.mainWindow.getChildren().add(tower);
+                System.out.println(towerType + " spawned.");
             }
         });
     }

@@ -64,8 +64,8 @@ public class GameStage {
 
     private void createTowerButton() {
 
-        double startXPos = 1015;
-        double startYPos = 25;
+        double startXPos = 1015.5;
+        double startYPos = 27;
 
         TowerButton tower1 = new TowerButton(GameEntity.TowerType.NormalTower);
         TowerButton tower2 = new TowerButton(GameEntity.TowerType.SniperTower);
@@ -77,20 +77,20 @@ public class GameStage {
         tower1.setLayoutX(startXPos);
         tower1.setLayoutY(startYPos);
 
-        tower2.setLayoutX(startXPos + 150);
-        tower2.setLayoutY(startYPos);
+        tower2.setLayoutX(startXPos + 148);
+        tower2.setLayoutY(startYPos + 2);
 
         tower3.setLayoutX(startXPos);
         tower3.setLayoutY(startYPos + 110);
 
-        tower4.setLayoutX(startXPos + 150);
-        tower4.setLayoutY(startYPos + 110);
+        tower4.setLayoutX(startXPos + 148);
+        tower4.setLayoutY(startYPos + 117);
 
         tower5.setLayoutX(startXPos);
-        tower5.setLayoutY(startYPos + 110*2);
+        tower5.setLayoutY(startYPos + 110*2-10);
 
-        tower6.setLayoutX(startXPos + 150);
-        tower6.setLayoutY(startYPos + 110*2);
+        tower6.setLayoutX(startXPos + 148);
+        tower6.setLayoutY(startYPos + 110*2-10);
 
         mainWindow.getChildren().add(tower1);
         mainWindow.getChildren().add(tower2);

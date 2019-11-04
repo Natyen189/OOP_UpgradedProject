@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class EnemySpawner extends AnchorPane {
 
-    private ArrayList<Enemy> enemies = new ArrayList<>();
+    public static ArrayList<Enemy> enemies = new ArrayList<>();
     public static Timeline timeline;
 
     public EnemySpawner(int numberOfEnemySpawned, GameEntity.EnemyType enemyType) {

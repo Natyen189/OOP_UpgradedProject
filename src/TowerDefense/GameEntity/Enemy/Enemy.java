@@ -17,6 +17,8 @@ public class Enemy extends GameEntity {
     public Enemy(EnemyType type) {
         loadImage(type);
         this.getChildren().add(image);
+        xPos = image.getLayoutX();
+        yPos = image.getLayoutY();
         move();
     }
 

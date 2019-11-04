@@ -1,35 +1,35 @@
-package TowerDefense.GameTile;
+package TowerDefense.GameTile.Tower;
 
-import TowerDefense.Button.TowerButton;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameStage;
+import TowerDefense.GameTile.Road;
 import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class Tower extends GameEntity {
     private int TowerValue;
     private int TowerLevel;
     private boolean draggable;
-    private boolean canShoot;
+    private boolean canSpawnBullet;
+    private static TowerType currentType;
+    private float ShootRange;
+
 
     public Tower(TowerType towerType) {
         draggable = true;
-        canShoot = false;
+        canSpawnBullet = true;
+        currentType = towerType;
         loadImage(towerType);
         this.getChildren().add(image);
         setMouse();
@@ -43,26 +43,32 @@ public class Tower extends GameEntity {
             case NormalTower:
                 imageLocation = new File("Asset\\TowerTile\\1.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                ShootRange = 110;
                 break;
             case SniperTower:
                 imageLocation = new File("Asset\\TowerTile\\2.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                ShootRange = 130;
                 break;
             case MachineGunTower:
                 imageLocation = new File("Asset\\TowerTile\\3.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                ShootRange = 90;
                 break;
             case UnnamedTower:
                 imageLocation = new File("Asset\\TowerTile\\4.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                ShootRange = 100;
                 break;
             case RayTower:
                 imageLocation = new File("Asset\\TowerTile\\5.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                ShootRange = 100;
                 break;
             case IceTurret:
                 imageLocation = new File("Asset\\TowerTile\\6.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                ShootRange = 100;
                 break;
         }
     }
@@ -99,9 +105,16 @@ public class Tower extends GameEntity {
         setOnMouseReleased(event -> {
             /*Kiểm tra xem nếu Tower nằm trong map và không va chạm với đường đi thì mới đặt được tháp*/
             if((this.getLayoutX() <= Config.SCREEN_WIDTH - Config.MENU_WIDTH
-                    && this.getLayoutY() <= Config.SCREEN_HEIGHT - Config.MENU_HEIGHT) && !checkCollision())
+                    && this.getLayoutY() <= Config.SCREEN_HEIGHT - Config.MENU_HEIGHT) && !collideWithRoad()) {
                 draggable = false;
-                canShoot = true;
+                xPos = this.getLayoutX();
+                yPos = this.getLayoutY();
+                generateFireRange();
+                if(canSpawnBullet) {
+                    spawnBullet(currentType);
+                    canSpawnBullet = false;
+                }
+            }
         });
     }
 
@@ -113,6 +126,7 @@ public class Tower extends GameEntity {
         circle.setRadius(Config.TILE_SIZE/2);
 
         PathTransition rotateTimeline = new PathTransition();
+        rotateTimeline.setDuration(Duration.millis(5000));
         rotateTimeline.setPath(circle);
         rotateTimeline.setNode(this);
         rotateTimeline.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -121,7 +135,7 @@ public class Tower extends GameEntity {
     }
 
     /*Kiểm tra va chạm với đường đi*/
-    private boolean checkCollision() {
+    private boolean collideWithRoad() {
         for(int i = 0; i < Road.roadPath.length; i++) {
             if(this.getBoundsInParent().intersects(Road.roadPath[i].getBoundsInParent())) {
                 System.out.println("Can't place tower on road.");
@@ -129,6 +143,19 @@ public class Tower extends GameEntity {
             }
         }
         return false;
+    }
+
+    /*Bắn đạn*/
+    private void spawnBullet(TowerType towerType) {
+        Bullet bullet = new Bullet(towerType);
+        GameStage.mainWindow.getChildren().add(bullet);
+    }
+
+    private void generateFireRange() {
+        Circle fireRange = new Circle(xPos + Config.TILE_SIZE, yPos + Config.TILE_SIZE, ShootRange);
+        fireRange.setFill(Color.TRANSPARENT);
+        fireRange.setStroke(Color.BLUEVIOLET);
+        GameStage.mainWindow.getChildren().add(fireRange);
     }
 
     @Override
