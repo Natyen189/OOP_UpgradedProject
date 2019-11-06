@@ -1,18 +1,28 @@
 package TowerDefense.GameTile.Tower;
 
 import TowerDefense.Config;
+import TowerDefense.GameEntity.Enemy.Enemy;
+import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameStage;
+import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -24,18 +34,18 @@ public class Tower extends GameEntity {
     private boolean canSpawnBullet;
     private static TowerType currentType;
     private float ShootRange;
-
+    private Circle fireRange = null;
 
     public Tower(TowerType towerType) {
         draggable = true;
         canSpawnBullet = true;
         currentType = towerType;
         loadImage(towerType);
-        this.getChildren().add(image);
         setMouse();
         DragTower();
         move();
         rotateTower();
+        this.getChildren().add(image);
     }
 
     private void loadImage(TowerType type) {
@@ -93,20 +103,24 @@ public class Tower extends GameEntity {
         });
     }
 
+    /*Quản lý thao tác kéo thả tháp*/
     private void DragTower() {
 
         setOnMouseDragged(event -> {
             if(draggable) {
-                this.setLayoutX(event.getSceneX() - Config.TILE_SIZE);
-                this.setLayoutY(event.getSceneY() - Config.TILE_SIZE);
+                this.setLayoutX(event.getSceneX() - (float)Config.TILE_SIZE/2);
+                this.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
+                Mountain.toggleVisibility(true);
             }
         });
 
-        setOnMouseReleased(event -> {
+        setOnMouseClicked(event -> {
             /*Kiểm tra xem nếu Tower nằm trong map và không va chạm với đường đi thì mới đặt được tháp*/
             if((this.getLayoutX() <= Config.SCREEN_WIDTH - Config.MENU_WIDTH
                     && this.getLayoutY() <= Config.SCREEN_HEIGHT - Config.MENU_HEIGHT) && !collideWithRoad()) {
                 draggable = false;
+                snapTowerToGrid();
+                Mountain.toggleVisibility(false);
                 xPos = this.getLayoutX();
                 yPos = this.getLayoutY();
                 generateFireRange();
@@ -118,12 +132,13 @@ public class Tower extends GameEntity {
         });
     }
 
+    /*Xoay tháp theo hướng đi của địch*/
     void rotateTower() {
 
         Circle circle = new Circle();
-        circle.setCenterX(this.getLayoutX() + Config.TILE_SIZE);
-        circle.setCenterY(this.getLayoutY() + Config.TILE_SIZE);
-        circle.setRadius(Config.TILE_SIZE/2);
+        circle.setCenterX(this.getLayoutX() + (float)Config.TILE_SIZE/2);
+        circle.setCenterY(this.getLayoutY() + (float)Config.TILE_SIZE/2);
+        circle.setRadius((float)Config.TILE_SIZE/4);
 
         PathTransition rotateTimeline = new PathTransition();
         rotateTimeline.setDuration(Duration.millis(5000));
@@ -136,8 +151,11 @@ public class Tower extends GameEntity {
 
     /*Kiểm tra va chạm với đường đi*/
     private boolean collideWithRoad() {
+        ColorAdjust adjust = new ColorAdjust();
         for(int i = 0; i < Road.roadPath.length; i++) {
             if(this.getBoundsInParent().intersects(Road.roadPath[i].getBoundsInParent())) {
+                adjust.setBrightness(-1);
+                this.setEffect(adjust);
                 System.out.println("Can't place tower on road.");
                 return true;
             }
@@ -147,16 +165,73 @@ public class Tower extends GameEntity {
 
     /*Bắn đạn*/
     private void spawnBullet(TowerType towerType) {
-        Bullet bullet = new Bullet(towerType);
-        GameStage.mainWindow.getChildren().add(bullet);
+        Line line = new Line();
+
+        Timeline test = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
+            Enemy temp = null;
+            for(int i = 0; i < EnemySpawner.enemies.size(); i++) {
+                /*Kiểm tra xem quân dịch có ở trong tầm bắn không*/
+                if (EnemySpawner.enemies.get(i).getBound().intersects(fireRange.getBoundsInParent())) {
+                    temp = EnemySpawner.enemies.get(i);
+                    break;
+                }
+            }
+
+            if(temp != null) {
+                Bullet bullet = new Bullet(towerType);
+                GameStage.mainWindow.getChildren().add(bullet);
+
+                line.setStartX(this.getLayoutX() + (float)Config.TILE_SIZE/2);
+                line.setStartY(this.getLayoutY() + (float)Config.TILE_SIZE/2);
+                line.setEndX(temp.getXPos() + (float)Config.TILE_SIZE/2);
+                line.setEndY(temp.getYPos() + (float)Config.TILE_SIZE/2);
+
+                PathTransition pathTransition = new PathTransition();
+                pathTransition.setNode(bullet);
+                pathTransition.setPath(line);
+                pathTransition.setCycleCount(1);
+                pathTransition.setDuration(Duration.seconds(0.3));
+                pathTransition.setOnFinished(actionEvent -> {
+                    bullet.onDestroy();
+                });
+                pathTransition.play();
+            }
+        }));
+        test.setCycleCount(Animation.INDEFINITE);
+        test.play();
+
     }
 
+    /*Tạo tầm bắn cho tháp*/
     private void generateFireRange() {
-        Circle fireRange = new Circle(xPos + Config.TILE_SIZE, yPos + Config.TILE_SIZE, ShootRange);
+        fireRange = new Circle(xPos + (float)Config.TILE_SIZE/2, yPos + (float)Config.TILE_SIZE/2, ShootRange);
         fireRange.setFill(Color.TRANSPARENT);
         fireRange.setStroke(Color.BLUEVIOLET);
         GameStage.mainWindow.getChildren().add(fireRange);
     }
+
+    void snapTowerToGrid() {
+        double distance = Double.POSITIVE_INFINITY;
+        double xPos = 0;
+        double yPos = 0;
+
+        for(int i = 0; i < Config.TILE_VERTICAL; i++) {
+            for(int j = 0; j < Config.TILE_HORIZONTAL; j++) {
+                if(Mountain.mapTile[i][j] != null) {
+                    double temp = Math.sqrt(Math.pow(this.getLayoutX() - Mountain.mapTile[i][j].getX(),2)
+                            + Math.pow(this.getLayoutY() - Mountain.mapTile[i][j].getY(),2));
+                    if(temp <= distance) {
+                        distance = temp;
+                        xPos = Mountain.mapTile[i][j].getX();
+                        yPos = Mountain.mapTile[i][j].getY();
+                    }
+                }
+            }
+        }
+        this.setLayoutX(xPos);
+        this.setLayoutY(yPos);
+    }
+
 
     @Override
     public boolean isDestroy() {

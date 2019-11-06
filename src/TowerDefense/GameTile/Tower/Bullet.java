@@ -2,9 +2,12 @@ package TowerDefense.GameTile.Tower;
 
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.Enemy;
+import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.HLineTo;
@@ -22,7 +25,6 @@ public class Bullet extends GameEntity {
     public Bullet(GameEntity.TowerType towerType) {
         loadBulletImage(towerType);
         this.getChildren().add(image);
-        move();
     }
 
     public void loadBulletImage(GameEntity.TowerType towerType) {
@@ -52,23 +54,6 @@ public class Bullet extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                  break;
         }
-    }
-
-    public void move() {
-        Path shootingPath = new Path();
-        shootingPath.getElements().add(new MoveTo(Tower.xPos + Config.TILE_SIZE,Tower.yPos + Config.TILE_SIZE));
-        shootingPath.getElements().add(new HLineTo(100));
-
-        PathTransition path = new PathTransition();
-        path.setNode(image);
-        path.setPath(shootingPath);
-        path.setDuration(Duration.millis(1000));
-        path.setCycleCount(Animation.INDEFINITE);
-        path.setAutoReverse(false);
-        path.setOnFinished(event-> {
-            onDestroy();
-        });
-        path.play();
     }
 
     @Override

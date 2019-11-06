@@ -4,6 +4,7 @@ import TowerDefense.Button.MenuButton;
 import TowerDefense.Button.TowerButton;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -16,8 +17,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class GameStage {
 
@@ -31,8 +30,8 @@ public class GameStage {
         gameStage = new Stage();
         gameStage.setScene(scene);
         setBackgroundImage();
-        createButton();
         createRoad();
+        createButton();
         createEnemy();
     }
 
@@ -101,19 +100,17 @@ public class GameStage {
     }
 
     public void createEnemy() {
-        Random random = new Random();
-        GameEntity.EnemyType [] enemyType = GameEntity.EnemyType.values();
 
         /*Gọi quân địch*/
-        Timeline test  = new Timeline(new KeyFrame(Duration.seconds(10), event-> {
+        EnemySpawner enemySpawner = new EnemySpawner();
+        mainWindow.getChildren().add(enemySpawner);
+
+        Timeline test  = new Timeline(new KeyFrame(Duration.seconds(20), event-> {
             if(MenuButton.startGame) {
-                /*Tạo quân địch ngẫu nhiên*/
-                int randomNumber = (int) (Math.random()*11);
-                GameEntity.EnemyType randomEnemy = enemyType[random.nextInt(enemyType.length)];
-                EnemySpawner normalEnemy = new EnemySpawner(randomNumber, randomEnemy);
-                System.out.println("Enemy: " + randomEnemy + ", Size: " + randomNumber);
-                mainWindow.getChildren().add(normalEnemy);
-                EnemySpawner.timeline.play();
+                /*Tạo quân địch dựa trên level*/
+                enemySpawner.spawnEnemy(EnemySpawner.level);
+                EnemySpawner.level += 1;
+                System.out.println("Enemy size: " + EnemySpawner.enemies.size());
             }
         }));
         test.setCycleCount(Animation.INDEFINITE);
@@ -122,5 +119,6 @@ public class GameStage {
 
     public void createRoad() {
         Road roadPath = new Road();
+        Mountain mountain = new Mountain();
     }
 }

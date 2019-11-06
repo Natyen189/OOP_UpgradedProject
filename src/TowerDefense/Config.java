@@ -19,17 +19,17 @@ public final class Config {
      * 1.0f field unit == TILE_SIZE pixel on the screen.
      * Change it base on your texture size.
      */
-    public static final int TILE_SIZE = 32;
+    public static final int TILE_SIZE = 64;
     /**
      * Num of tiles the screen can display if fieldZoom is TILE_SIZE,
      * in other words, the texture will be display as it without scaling.
      */
-    public static final int TILE_HORIZONTAL = 30;
+    public static final int TILE_HORIZONTAL = 15;
     /**
      * Num of tiles the screen can display if fieldZoom is TILE_SIZE,
      * in other words, the texture will be display as it without scaling.
      */
-    public static final int TILE_VERTICAL = 20;
+    public static final int TILE_VERTICAL = 10;
     /**
      * An arbitrary number just to make some code run a little faster.
      * Do not touch.

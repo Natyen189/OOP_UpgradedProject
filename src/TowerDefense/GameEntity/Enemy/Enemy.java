@@ -2,6 +2,7 @@ package TowerDefense.GameEntity.Enemy;
 
 import TowerDefense.GameEntity.GameEntity;
 import javafx.animation.PathTransition;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.*;
@@ -82,8 +83,20 @@ public class Enemy extends GameEntity {
 
     public void onDestroy() {
         this.getChildren().remove(image);
+        EnemySpawner.enemies.remove(this);
         image = null;
     }
 
+    public double getXPos() {
+        return image.getTranslateX();
+    }
+
+    public double getYPos() {
+        return image.getTranslateY();
+    }
+
+    public Bounds getBound() {
+        return image.getBoundsInParent();
+    }
 
 }

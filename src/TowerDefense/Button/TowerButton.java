@@ -1,5 +1,6 @@
 package TowerDefense.Button;
 
+import TowerDefense.Config;
 import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameTile.Tower.Tower;
 import TowerDefense.GameStage;
@@ -80,8 +81,8 @@ public class TowerButton extends GameEntity {
         setOnMouseClicked(event-> {
             if(MenuButton.startGame) {
                 Tower tower = new Tower(towerType);
-                tower.setLayoutX(event.getSceneX());
-                tower.setLayoutY(event.getSceneY());
+                tower.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
+                tower.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
                 GameStage.mainWindow.getChildren().add(tower);
                 System.out.println(towerType + " spawned.");
             }

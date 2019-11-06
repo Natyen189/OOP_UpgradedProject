@@ -1,11 +1,12 @@
 package TowerDefense.GameEntity;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
 
-public abstract class GameEntity extends VBox {
+public abstract class GameEntity extends AnchorPane {
 
     protected ImageView image;
     protected File imageLocation;
