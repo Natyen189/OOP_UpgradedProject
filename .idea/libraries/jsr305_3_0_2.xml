@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="jsr305-3.0.2">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../jar_files/jsr305-3.0.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/ForCodes/oop/jsr305-3.0.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
