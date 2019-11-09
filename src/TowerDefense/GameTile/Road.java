@@ -20,7 +20,7 @@ public class Road extends VBox {
         roadPath[0].setY(Config.TILE_SIZE*4 + offset);
         roadPath[0].setWidth(Config.TILE_SIZE*4);
         roadPath[0].setHeight(Config.TILE_SIZE*2 - offset*2);
-        roadPath[0].setVisible(false);
+        roadPath[0].setVisible(true);
 
         roadPath[1] = new Rectangle();
         roadPath[1].setX(Config.TILE_SIZE*3 + offset);
