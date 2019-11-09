@@ -1,14 +1,16 @@
 package TowerDefense.GameEntity.Enemy;
 
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameStage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class EnemySpawner extends AnchorPane {
+public class EnemySpawner extends Pane {
 
     public static int level = 0;
     public static ArrayList<Enemy> enemies = new ArrayList<>();
@@ -79,16 +81,56 @@ public class EnemySpawner extends AnchorPane {
             case 19:
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
                 break;
+            case 20:
+                spawnByNumberAndType(6, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(6, GameEntity.EnemyType.TankerEnemy);
+                break;
+            case 21:
+                spawnByNumberAndType(12, GameEntity.EnemyType.TankerEnemy);
+                break;
+            case 22:
+                spawnByNumberAndType(7, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(6, GameEntity.EnemyType.TankerEnemy);
+                break;
+            case 23:
+                spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
+                spawnByNumberAndType(7, GameEntity.EnemyType.TankerEnemy);
+                break;
+            case 24:
+                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
+                break;
+            case 25:
+                spawnByNumberAndType(7, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(5, GameEntity.EnemyType.SmallerEnemy);
+                break;
+            case 26:
+                spawnByNumberAndType(6, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(6, GameEntity.EnemyType.SmallerEnemy);
+                break;
+            case 27:
+                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
+                break;
+            case 28:
+                spawnByNumberAndType(6, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(7, GameEntity.EnemyType.SmallerEnemy);
+                break;
+            case 29:
+                spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
+                spawnByNumberAndType(5, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(5, GameEntity.EnemyType.SmallerEnemy);
+                break;
         }
 
     }
 
     public void spawnByNumberAndType(int numberOfEnemySpawned, GameEntity.EnemyType enemyType) {
-        timeline  = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            enemies.add(new Enemy(enemyType));
-            this.getChildren().add(enemies.get(enemies.size()-1));
-        }));
 
+        timeline  = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            Enemy tempEnemy = new Enemy(enemyType);
+            tempEnemy.increaseHealthByLevel(level);
+            enemies.add(tempEnemy);
+            GameStage.mainWindow.getChildren().add(enemies.get(enemies.size()-1));
+        }));
         timeline.setCycleCount(numberOfEnemySpawned);
         timeline.play();
 

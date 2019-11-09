@@ -20,12 +20,12 @@ import java.io.File;
 
 public class GameStage {
 
-    public static AnchorPane mainWindow;
-    private Scene scene;
-    private Stage gameStage;
+    public static Pane mainWindow;
+    public static Scene scene;
+    public static Stage gameStage;
 
     public GameStage() {
-        mainWindow = new AnchorPane();
+        mainWindow = new Pane();
         scene = new Scene(mainWindow, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(scene);
@@ -68,8 +68,8 @@ public class GameStage {
 
         TowerButton tower1 = new TowerButton(GameEntity.TowerType.NormalTower);
         TowerButton tower2 = new TowerButton(GameEntity.TowerType.SniperTower);
-        TowerButton tower3 = new TowerButton(GameEntity.TowerType.MachineGunTower);
-        TowerButton tower4 = new TowerButton(GameEntity.TowerType.UnnamedTower);
+        TowerButton tower3 = new TowerButton(GameEntity.TowerType.MachineGun);
+        TowerButton tower4 = new TowerButton(GameEntity.TowerType.AirTower);
         TowerButton tower5 = new TowerButton(GameEntity.TowerType.RayTower);
         TowerButton tower6 = new TowerButton(GameEntity.TowerType.IceTurret);
 
@@ -105,12 +105,11 @@ public class GameStage {
         EnemySpawner enemySpawner = new EnemySpawner();
         mainWindow.getChildren().add(enemySpawner);
 
-        Timeline test  = new Timeline(new KeyFrame(Duration.seconds(20), event-> {
+        Timeline test  = new Timeline(new KeyFrame(Duration.seconds(6), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
                 enemySpawner.spawnEnemy(EnemySpawner.level);
                 EnemySpawner.level += 1;
-                System.out.println("Enemy size: " + EnemySpawner.enemies.size());
             }
         }));
         test.setCycleCount(Animation.INDEFINITE);

@@ -1,18 +1,14 @@
 package TowerDefense.GameEntity;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.io.File;
 
-public abstract class GameEntity extends AnchorPane {
+public abstract class GameEntity extends Pane {
 
     protected ImageView image;
     protected File imageLocation;
-    protected int health;
-    protected static double xPos;
-    protected static double yPos;
 
     public enum EnemyType {
         NormalEnemy,
@@ -24,8 +20,8 @@ public abstract class GameEntity extends AnchorPane {
     public enum TowerType {
         NormalTower,
         SniperTower,
-        MachineGunTower,
-        UnnamedTower,
+        MachineGun,
+        AirTower,
         IceTurret,
         RayTower
     }
@@ -38,14 +34,6 @@ public abstract class GameEntity extends AnchorPane {
 
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public abstract boolean isDestroy();
+    public boolean outOfHealth() {return false;}
 
 }

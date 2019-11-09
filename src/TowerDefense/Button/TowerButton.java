@@ -34,11 +34,11 @@ public class TowerButton extends GameEntity {
                 imageLocation = new File("Asset\\TowerTile\\2.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
-            case MachineGunTower:
+            case MachineGun:
                 imageLocation = new File("Asset\\TowerTile\\3.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
-            case UnnamedTower:
+            case AirTower:
                 imageLocation = new File("Asset\\TowerTile\\4.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
@@ -51,11 +51,6 @@ public class TowerButton extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
         }
-    }
-
-    @Override
-    public boolean isDestroy() {
-        return false;
     }
 
     void setMouse() {
@@ -81,6 +76,7 @@ public class TowerButton extends GameEntity {
         setOnMouseClicked(event-> {
             if(MenuButton.startGame) {
                 Tower tower = new Tower(towerType);
+                tower.setViewOrder(-1);
                 tower.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
                 tower.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
                 GameStage.mainWindow.getChildren().add(tower);
