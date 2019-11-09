@@ -82,6 +82,7 @@ public class Tower extends GameEntity {
                 imageLocation = new File("Asset\\TowerTile\\6.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 ShootRange = 80;
+                ShootSpeed = 0.5;
                 TowerDamage = 0.3;
                 break;
         }
@@ -241,6 +242,8 @@ public class Tower extends GameEntity {
         this.setLayoutX(xPos);
         this.setLayoutY(yPos);
     }
+
+    private void upgradeTower(){}
 
     public int getTowerValue() {
         return TowerValue;

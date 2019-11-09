@@ -15,7 +15,7 @@ import java.io.File;
 public class Enemy extends GameEntity {
 
     public static double speed;
-    public double health = 1;
+    public double health;
     public EnemyType currentType;
 
     public Enemy(EnemyType type) {
@@ -39,6 +39,7 @@ public class Enemy extends GameEntity {
                 }
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 speed = 35;
+                health = 1;
                 break;
             case TankerEnemy:
                 if(random % 2 == 0) {
@@ -49,6 +50,7 @@ public class Enemy extends GameEntity {
                 }
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 speed = 40;
+                health = 3;
                 break;
             case SmallerEnemy:
                 if(random % 2 == 0) {
@@ -58,7 +60,8 @@ public class Enemy extends GameEntity {
                     imageLocation = new File("Asset\\EnemyTile\\3.1.png");
                 }
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
-                speed = 25;
+                speed = 20;
+                health = 0.7;
                 break;
             case BossEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\4.png");
@@ -66,6 +69,7 @@ public class Enemy extends GameEntity {
                 image.setFitHeight(192);
                 image.setFitWidth(192);
                 speed = 50;
+                health = 100;
                 break;
         }
     }
@@ -91,14 +95,14 @@ public class Enemy extends GameEntity {
             quadTo.setControlX(200.0f);
             quadTo.setControlY(-100.0f);
             quadTo.setX(400.0f);
-            quadTo.setY(318);
+            quadTo.setY(318.0f);
             LineTo line = new LineTo();
             line.setX(960);
             line.setY(126);
 
             movePath.getElements().add(new MoveTo(0, 318));
             movePath.getElements().add(quadTo);
-            movePath.getElements().add(new VLineTo(500));
+            movePath.getElements().add(new VLineTo(574));
             movePath.getElements().add(line);
         }
 
