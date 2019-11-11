@@ -19,6 +19,7 @@ public class TowerStats extends Label {
     private String towerPrice;
 
     public TowerStats(Tower tower) {
+
         towerDamage = Double.toString(tower.getTowerDamage());
         towerRange = Double.toString(tower.getShootRange());
         towerLevel = String.valueOf(tower.getTowerLevel());
@@ -66,7 +67,6 @@ public class TowerStats extends Label {
         baseInformation[4].setScaleY(2);
         baseInformation[4].setTextFill(Color.PURPLE);
         baseInformation[4].setFont(Font.loadFont("file:Asset\\Font\\UTM BanqueR.ttf", 13));
-
 
         for (Label baseInfo : baseInformation) {
             GameStage.mainWindow.getChildren().add(baseInfo);
@@ -138,6 +138,19 @@ public class TowerStats extends Label {
 
     }
 
+    public void updateStats(Tower tower) {
+
+        towerDamage = Double.toString(Math.round(tower.getTowerDamage()*100));
+        towerRange = Double.toString(tower.getShootRange());
+        towerLevel = String.valueOf(tower.getTowerLevel());
+        towerPrice = String.valueOf(tower.getTowerValue());
+
+        towerStats[1].setText(towerDamage);
+        towerStats[2].setText(towerRange);
+        towerStats[3].setText(towerLevel);
+        towerStats[4].setText(towerPrice);
+    }
+
     public void toggleStat(boolean toggle) {
         for (Label baseInfo : baseInformation) {
             baseInfo.setVisible(toggle);
@@ -145,6 +158,17 @@ public class TowerStats extends Label {
 
         for (Label towerStat : towerStats) {
             towerStat.setVisible(toggle);
+        }
+    }
+
+    public void onDestroy() {
+
+        for (Label baseInfo : baseInformation) {
+            GameStage.mainWindow.getChildren().remove(baseInfo);
+        }
+
+        for (Label towerStat : towerStats) {
+            GameStage.mainWindow.getChildren().remove(towerStat);
         }
     }
 }

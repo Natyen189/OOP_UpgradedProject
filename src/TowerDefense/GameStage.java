@@ -1,7 +1,9 @@
 package TowerDefense;
 
 import TowerDefense.Button.MenuButton;
+import TowerDefense.Button.SellButton;
 import TowerDefense.Button.TowerButton;
+import TowerDefense.Button.UpgradeButton;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameTile.Mountain;
@@ -50,6 +52,8 @@ public class GameStage {
     private void createButton() {
         createMenuButton();
         createTowerButton();
+        createUpgradeButton();
+        createSellButton();
     }
 
     private void createMenuButton() {
@@ -59,6 +63,24 @@ public class GameStage {
         startButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 180);
         startButton.setLayoutY((float)Config.SCREEN_HEIGHT/2);
         mainWindow.getChildren().add(startButton);
+    }
+
+    private void createUpgradeButton() {
+        File upgradeButtonPath = new File("Asset\\Upgrade.png");
+        ImageView buttonImage = new ImageView(new Image(upgradeButtonPath.toURI().toString()));
+        UpgradeButton upgradeButton = new UpgradeButton("", buttonImage);
+        upgradeButton.setLayoutX((float)Config.SCREEN_WIDTH - 290);
+        upgradeButton.setLayoutY((float)Config.SCREEN_HEIGHT - 400);
+        mainWindow.getChildren().add(upgradeButton);
+    }
+
+    private void createSellButton() {
+        File sellButtonPath = new File("Asset\\Sell.png");
+        ImageView buttonImage = new ImageView(new Image(sellButtonPath.toURI().toString()));
+        SellButton sellButton = new SellButton("", buttonImage);
+        sellButton.setLayoutX((float)Config.SCREEN_WIDTH - 130);
+        sellButton.setLayoutY((float)Config.SCREEN_HEIGHT - 400);
+        mainWindow.getChildren().add(sellButton);
     }
 
     private void createTowerButton() {

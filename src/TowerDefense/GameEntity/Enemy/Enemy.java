@@ -1,12 +1,20 @@
 package TowerDefense.GameEntity.Enemy;
 
+import TowerDefense.Config;
 import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameStage;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
 
@@ -15,11 +23,14 @@ import java.io.File;
 public class Enemy extends GameEntity {
 
     public static double speed;
-    public double health;
+    public double health = 1;
+    private double armor;
     public EnemyType currentType;
+    private ProgressBar healthBar;
 
     public Enemy(EnemyType type) {
         currentType = type;
+        generateHealthBar();
         loadImage(type);
         this.getChildren().add(image);
         move(type);
@@ -38,8 +49,8 @@ public class Enemy extends GameEntity {
                     imageLocation = new File("Asset\\EnemyTile\\1.1.png");
                 }
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                armor = 1;
                 speed = 35;
-                health = 1;
                 break;
             case TankerEnemy:
                 if(random % 2 == 0) {
@@ -50,7 +61,7 @@ public class Enemy extends GameEntity {
                 }
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 speed = 40;
-                health = 3;
+                armor = 3;
                 break;
             case SmallerEnemy:
                 if(random % 2 == 0) {
@@ -60,16 +71,16 @@ public class Enemy extends GameEntity {
                     imageLocation = new File("Asset\\EnemyTile\\3.1.png");
                 }
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
+                armor = 0.7;
                 speed = 20;
-                health = 0.7;
                 break;
             case BossEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\4.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
-                image.setFitHeight(192);
-                image.setFitWidth(192);
+                image.setFitHeight(128);
+                image.setFitWidth(162);
+                armor = 30;
                 speed = 50;
-                health = 100;
                 break;
         }
     }
@@ -130,8 +141,47 @@ public class Enemy extends GameEntity {
 
     public void onDestroy() {
         this.getChildren().remove(image);
+        this.getChildren().remove(healthBar);
         image = null;
+        healthBar = null;
         EnemySpawner.enemies.remove(this);
+    }
+
+    private void generateHealthBar() {
+        healthBar = new ProgressBar(this.health);
+        healthBar.setPrefSize(Config.TILE_SIZE - 10, (float)Config.TILE_SIZE/6);
+        healthBar.setStyle("-fx-accent: red;");
+        this.getChildren().add(healthBar);
+
+        Timeline test = new Timeline(new KeyFrame(Duration.seconds(0.01), event -> {
+            if(healthBar != null) {
+                switch (this.currentType) {
+                    case NormalEnemy:
+                        healthBar.setTranslateX(image.getTranslateX() - 10);
+                        break;
+                    case TankerEnemy:
+                        healthBar.setTranslateX(image.getTranslateX());
+                        break;
+                    case SmallerEnemy:
+                        healthBar.setTranslateX(image.getTranslateX() + 10);
+                        break;
+                    case BossEnemy:
+                        healthBar.setTranslateX(image.getTranslateX() + 50);
+                        break;
+                }
+                healthBar.setTranslateY(image.getTranslateY() - 20);
+            }
+        }));
+        test.setCycleCount(Animation.INDEFINITE);
+        test.setAutoReverse(false);
+        test.play();
+    }
+
+    public void subtractHealth(double damage) {
+        if(healthBar != null) {
+            health -= damage/armor;
+            healthBar.setProgress(health);
+        }
     }
 
     public double getXPos() {
@@ -147,7 +197,7 @@ public class Enemy extends GameEntity {
     }
 
     public void increaseHealthByLevel(int level) {
-        health += level*0.2;
+        armor += level*0.2;
     }
 
 }

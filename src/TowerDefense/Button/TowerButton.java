@@ -11,10 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class TowerButton extends GameEntity {
 
     private TowerType towerType;
+    public static ArrayList<Tower> towerList = new ArrayList<>();
 
     public TowerButton(GameEntity.TowerType towerType) {
         this.towerType = towerType;
@@ -75,11 +77,12 @@ public class TowerButton extends GameEntity {
     void spawnTower() {
         setOnMouseClicked(event-> {
             if(MenuButton.startGame) {
-                Tower tower = new Tower(towerType);
-                tower.setViewOrder(-1);
-                tower.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
-                tower.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
-                GameStage.mainWindow.getChildren().add(tower);
+                Tower temp = new Tower(towerType);
+                temp.setViewOrder(-1);
+                temp.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
+                temp.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
+                towerList.add(temp);
+                GameStage.mainWindow.getChildren().add(towerList.get(towerList.size()-1));
                 System.out.println(towerType + " spawned.");
             }
         });
