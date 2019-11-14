@@ -2,8 +2,10 @@ package TowerDefense.Button;
 
 import TowerDefense.Config;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameTile.Tower.Tower;
 import TowerDefense.GameStage;
+import TowerDefense.GameTile.Tower.TowerStats;
 import javafx.event.EventHandler;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -17,9 +19,12 @@ public class TowerButton extends GameEntity {
 
     private TowerType towerType;
     public static ArrayList<Tower> towerList = new ArrayList<>();
+    private TowerStats towerStats;
 
-    public TowerButton(GameEntity.TowerType towerType) {
-        this.towerType = towerType;
+    public TowerButton(Tower tower) {
+        towerStats = new TowerStats(tower);
+        towerStats.toggleStat(false);
+        this.towerType = tower.getCurrentType();
         loadImage(towerType);
         this.getChildren().add(image);
         setMouse();
@@ -61,7 +66,12 @@ public class TowerButton extends GameEntity {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
+                for(int i = 0; i < towerList.size(); i++) {
+                    towerList.get(i).isSelected = false;
+                    TowerButton.towerList.get(i).towerStats.toggleStat(false);
+                }
                 setEffect(new Glow());
+                towerStats.toggleStat(true);
             }
         });
 
@@ -70,6 +80,7 @@ public class TowerButton extends GameEntity {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 setEffect(null);
+                towerStats.toggleStat(false);
             }
         });
     }
@@ -77,13 +88,17 @@ public class TowerButton extends GameEntity {
     void spawnTower() {
         setOnMouseClicked(event-> {
             if(MenuButton.startGame) {
+                towerStats.toggleStat(false);
                 Tower temp = new Tower(towerType);
-                temp.setViewOrder(-1);
-                temp.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
-                temp.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
-                towerList.add(temp);
-                GameStage.mainWindow.getChildren().add(towerList.get(towerList.size()-1));
-                System.out.println(towerType + " spawned.");
+                if(PlayerStats.money >= temp.getTowerValue()) {
+                    PlayerStats.money -= temp.getTowerValue();
+                    temp.setViewOrder(-1);
+                    temp.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
+                    temp.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
+                    towerList.add(temp);
+                    GameStage.mainWindow.getChildren().add(towerList.get(towerList.size()-1));
+                    System.out.println(towerType + " spawned.");
+                }
             }
         });
     }

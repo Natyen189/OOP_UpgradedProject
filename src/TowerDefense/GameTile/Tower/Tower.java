@@ -10,6 +10,7 @@ import TowerDefense.GameStage;
 import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
 import javafx.animation.*;
+import javafx.geometry.Bounds;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +24,8 @@ import java.io.File;
 public class Tower extends GameEntity {
     private int TowerValue;
     private int TowerLevel;
+    private int TowerUpgradeCost;
+    private int TowerSellValue;
     private double TowerDamage;
     private double ShootRange;
     private double ShootSpeed;
@@ -31,19 +34,20 @@ public class Tower extends GameEntity {
     public boolean isSelected;
     private TowerType currentType;
     private Circle fireRange = null;
-    private TowerStats towerStats;
+    public TowerStats towerStats;
 
     public Tower(TowerType towerType) {
+        loadImage(towerType);
+        displayTowerStats();
+        DragTower();
         draggable = true;
         canSpawnBullet = true;
         isSelected = false;
         currentType = towerType;
+        TowerLevel = 1;
+        TowerUpgradeCost = TowerValue;
         towerStats = new TowerStats(this);
         towerStats.toggleStat(false);
-        TowerLevel = 0;
-        loadImage(towerType);
-        displayTowerStats();
-        DragTower();
         this.getChildren().add(image);
     }
 
@@ -60,10 +64,10 @@ public class Tower extends GameEntity {
             case SniperTower:
                 imageLocation = new File("Asset\\TowerTile\\2.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
-                ShootRange = 110;
+                ShootRange = 150;
                 ShootSpeed = 0.7;
-                TowerDamage = 0.2;
-                TowerValue = 50;
+                TowerDamage = 0.7;
+                TowerValue = 70;
                 break;
             case MachineGun:
                 imageLocation = new File("Asset\\TowerTile\\3.png");
@@ -94,7 +98,7 @@ public class Tower extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 ShootRange = 80;
                 ShootSpeed = 0.5;
-                TowerDamage = 0.3;
+                TowerDamage = 0.01;
                 TowerValue = 100;
                 break;
         }
@@ -139,7 +143,7 @@ public class Tower extends GameEntity {
         setOnMouseReleased(event -> {
             /*Kiểm tra xem nếu Tower nằm trong map và không va chạm với đường đi thì mới đặt được tháp*/
             if((this.getLayoutX() <= Config.SCREEN_WIDTH - Config.MENU_WIDTH
-                    && this.getLayoutY() <= Config.SCREEN_HEIGHT - Config.MENU_HEIGHT) && !collideWithRoad()) {
+                    && this.getLayoutY() <= Config.SCREEN_HEIGHT - Config.MENU_HEIGHT) && !collideWithRoad() && !collideWithSelf()) {
                 draggable = false;
                 snapTowerToGrid();
                 Mountain.toggleVisibility(false);
@@ -147,7 +151,6 @@ public class Tower extends GameEntity {
                     generateFireRange();
                     spawnBullet();
                     canSpawnBullet = false;
-                    upgradeTower();
                 }
             }
         });
@@ -171,6 +174,18 @@ public class Tower extends GameEntity {
                 return true;
             }
         }
+        return false;
+    }
+
+    /*Kiểm tra xem có bị trùng chỗ đặt tháp không*/
+    private boolean collideWithSelf() {
+        for(int i = TowerButton.towerList.size() - 2; i >= 0; i--) {
+            if(this.getBoundsInParent().intersects(TowerButton.towerList.get(i).getTowerBound())) {
+                System.out.println("This position is occupied.");
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -211,7 +226,7 @@ public class Tower extends GameEntity {
         fireRange.setFill(Color.TRANSPARENT);
         fireRange.setStroke(Color.BLUEVIOLET);
         fireRange.setVisible(true);
-        fireRange.setViewOrder(1);
+        fireRange.setViewOrder(0);
         GameStage.mainWindow.getChildren().add(fireRange);
     }
 
@@ -222,8 +237,8 @@ public class Tower extends GameEntity {
         Line line = new Line();
         GameStage.mainWindow.getChildren().add(bullet);
 
-        line.setStartX(this.getLayoutX() + (float) Config.TILE_SIZE / 2);
-        line.setStartY(this.getLayoutY() + (float) Config.TILE_SIZE / 2);
+        line.setStartX(this.getLayoutX() + this.getWidth()/ 2);
+        line.setStartY(this.getLayoutY() + this.getHeight()/ 2);
         line.setEndX(targetEnemy.getXPos() + targetEnemy.getWidth()/2);
         line.setEndY(targetEnemy.getYPos() + targetEnemy.getHeight()/2);
 
@@ -236,8 +251,10 @@ public class Tower extends GameEntity {
         pathTransition.setOnFinished(actionEvent -> {
             if(!targetEnemy.outOfHealth()) {
                 targetEnemy.subtractHealth(TowerDamage);
+                targetEnemy.onEndureTowerSpecial(currentType);
             }
             else {
+                PlayerStats.money += targetEnemy.getValue();
                 targetEnemy.onDestroy();
             }
             bullet.onDestroy();
@@ -263,25 +280,49 @@ public class Tower extends GameEntity {
                 }
             }
         }
+
         this.setLayoutX(xPos);
         this.setLayoutY(yPos);
     }
 
     public void upgradeTower() {
-        if(TowerLevel < 5) {
+
+        if(TowerLevel < 5 && PlayerStats.money >= TowerUpgradeCost) {
+            switch (currentType) {
+                case NormalTower:
+                    TowerDamage += 0.3;
+                    break;
+                case SniperTower:
+                    TowerDamage += 0.5;
+                    break;
+                case MachineGun:
+                    TowerDamage += 0.2;
+                    break;
+                case AirTower:
+                    TowerDamage += 0.3;
+                    break;
+                case RayTower:
+                    TowerDamage += 0.2;
+                    break;
+                case IceTurret:
+                    TowerDamage += 0.02;
+                    break;
+            }
+
+            if(TowerLevel > 1)
+            TowerUpgradeCost += TowerValue;
+            TowerSellValue = TowerUpgradeCost/2;
             ShootRange += 5;
-            TowerDamage += 0.5;
-            PlayerStats.money -= TowerValue;
-            TowerValue += 10;
+            fireRange.setRadius(ShootRange);
+            PlayerStats.money -= TowerUpgradeCost;
             TowerLevel++;
             towerStats.updateStats(this);
         }
     }
 
     public void sellTower() {
-        int sellValue = TowerValue/3;
         onDestroy();
-        PlayerStats.money += sellValue;
+        PlayerStats.money += TowerSellValue;
     }
 
     public void onDestroy() {
@@ -304,12 +345,24 @@ public class Tower extends GameEntity {
         return TowerDamage;
     }
 
+    public int getTowerUpgradeCost() {
+        return TowerUpgradeCost;
+    }
+
+    public int getTowerSellValue() {
+        return TowerSellValue;
+    }
+
     public TowerType getCurrentType() {
         return currentType;
     }
 
     public double getShootRange() {
         return ShootRange;
+    }
+
+    public Bounds getTowerBound() {
+        return this.getBoundsInParent();
     }
 
 }

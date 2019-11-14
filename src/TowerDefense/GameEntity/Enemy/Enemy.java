@@ -25,8 +25,10 @@ public class Enemy extends GameEntity {
     public static double speed;
     public double health = 1;
     private double armor;
+    private int value;
     public EnemyType currentType;
     private ProgressBar healthBar;
+    private PathTransition pathTransition;
 
     public Enemy(EnemyType type) {
         currentType = type;
@@ -51,6 +53,7 @@ public class Enemy extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 armor = 1;
                 speed = 35;
+                value = 10;
                 break;
             case TankerEnemy:
                 if(random % 2 == 0) {
@@ -62,6 +65,7 @@ public class Enemy extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 speed = 40;
                 armor = 3;
+                value = 30;
                 break;
             case SmallerEnemy:
                 if(random % 2 == 0) {
@@ -73,6 +77,7 @@ public class Enemy extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 armor = 0.7;
                 speed = 20;
+                value = 10;
                 break;
             case BossEnemy:
                 imageLocation = new File("Asset\\EnemyTile\\4.png");
@@ -81,6 +86,7 @@ public class Enemy extends GameEntity {
                 image.setFitWidth(162);
                 armor = 30;
                 speed = 50;
+                value = 200;
                 break;
         }
     }
@@ -88,37 +94,61 @@ public class Enemy extends GameEntity {
     public void move(EnemyType enemyType) {
 
         Path movePath;
+        int random = (int)(Math.random()*11);
 
-        if(enemyType != EnemyType.SmallerEnemy) {
+        if(enemyType == EnemyType.SmallerEnemy) {
+            movePath = new Path();
+
+            if(random%2 == 0) {
+                QuadCurveTo quadTo = new QuadCurveTo();
+                quadTo.setControlX(1800.0f);
+                quadTo.setControlY(250.0f);
+                quadTo.setX(600.0f);
+                quadTo.setY(250.0f);
+                LineTo line = new LineTo();
+                line.setX(0);
+                line.setY(441);
+
+                movePath.getElements().add(new MoveTo(500, 0));
+                movePath.getElements().add(quadTo);
+                movePath.getElements().add(new VLineTo(574));
+                movePath.getElements().add(line);
+            }
+            else {
+                QuadCurveTo quadTo = new QuadCurveTo();
+                quadTo.setControlX(400.0f);
+                quadTo.setControlY(-189.0f);
+                quadTo.setX(0.0f);
+                quadTo.setY(441.0f);
+
+                movePath.getElements().add(new MoveTo(1179, 693));
+                movePath.getElements().add(quadTo);
+            }
+        }
+
+        else {
             movePath = new Path();
 
             /*HLineTo: Đi theo trục hoành, VLineTo: Đi theo trục tung*/
-            movePath.getElements().add(new MoveTo(0, 318));
-            movePath.getElements().add(new HLineTo(256));
-            movePath.getElements().add(new VLineTo(574));
-            movePath.getElements().add(new HLineTo(640));
-            movePath.getElements().add(new VLineTo(126));
-            movePath.getElements().add(new HLineTo(960));
-        }
-        else {
-            movePath = new Path();
-            QuadCurveTo quadTo = new QuadCurveTo();
-            quadTo.setControlX(200.0f);
-            quadTo.setControlY(-100.0f);
-            quadTo.setX(400.0f);
-            quadTo.setY(318.0f);
-            LineTo line = new LineTo();
-            line.setX(960);
-            line.setY(126);
-
-            movePath.getElements().add(new MoveTo(0, 318));
-            movePath.getElements().add(quadTo);
-            movePath.getElements().add(new VLineTo(574));
-            movePath.getElements().add(line);
+            movePath.getElements().add(new MoveTo(0, 63));
+            movePath.getElements().add(new HLineTo(819));
+            movePath.getElements().add(new VLineTo(252));
+            movePath.getElements().add(new HLineTo(1071));
+            movePath.getElements().add(new VLineTo(441));
+            movePath.getElements().add(new HLineTo(567));
+            if(random%2 == 0) {
+                movePath.getElements().add(new VLineTo(567));
+            }
+            else {
+                movePath.getElements().add(new VLineTo(315));
+            }
+            movePath.getElements().add(new HLineTo(189));
+            movePath.getElements().add(new VLineTo(441));
+            movePath.getElements().add(new HLineTo(0));
         }
 
         /*Tạo đường đi dựa trên Path đã khai báo ở trên cho quân địch*/
-        PathTransition pathTransition = new PathTransition();
+        pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.seconds(speed));
         pathTransition.setNode(image);
         pathTransition.setPath(movePath);
@@ -127,9 +157,9 @@ public class Enemy extends GameEntity {
         pathTransition.setAutoReverse(false);
         /*Quân địch khi đi đến cuối đường sẽ bị hủy và người chơi bị trừ máu*/
         pathTransition.setOnFinished(actionEvent -> {
-            onDestroy();
             if(!this.outOfHealth())
             PlayerStats.subtractHealth();
+            onDestroy();
         });
         pathTransition.play();
     }
@@ -151,13 +181,14 @@ public class Enemy extends GameEntity {
         healthBar = new ProgressBar(this.health);
         healthBar.setPrefSize(Config.TILE_SIZE - 10, (float)Config.TILE_SIZE/6);
         healthBar.setStyle("-fx-accent: red;");
+        healthBar.setViewOrder(-1);
         this.getChildren().add(healthBar);
 
         Timeline test = new Timeline(new KeyFrame(Duration.seconds(0.01), event -> {
             if(healthBar != null) {
                 switch (this.currentType) {
                     case NormalEnemy:
-                        healthBar.setTranslateX(image.getTranslateX() - 10);
+                        healthBar.setTranslateX(image.getTranslateX() - 15);
                         break;
                     case TankerEnemy:
                         healthBar.setTranslateX(image.getTranslateX());
@@ -169,7 +200,7 @@ public class Enemy extends GameEntity {
                         healthBar.setTranslateX(image.getTranslateX() + 50);
                         break;
                 }
-                healthBar.setTranslateY(image.getTranslateY() - 20);
+                healthBar.setTranslateY(image.getTranslateY() - 15);
             }
         }));
         test.setCycleCount(Animation.INDEFINITE);
@@ -181,6 +212,19 @@ public class Enemy extends GameEntity {
         if(healthBar != null) {
             health -= damage/armor;
             healthBar.setProgress(health);
+        }
+    }
+
+    public void onEndureTowerSpecial(TowerType currentType) {
+        if(currentType == TowerType.IceTurret) {
+            Timeline test = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+                pathTransition.pause();
+            }));
+            test.setCycleCount(5);
+            test.setOnFinished(event-> {
+                pathTransition.play();
+            });
+            test.play();
         }
     }
 
@@ -196,8 +240,12 @@ public class Enemy extends GameEntity {
         return image.getBoundsInParent();
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public void increaseHealthByLevel(int level) {
-        armor += level*0.2;
+        armor += level;
     }
 
 }

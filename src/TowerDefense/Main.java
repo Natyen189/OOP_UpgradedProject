@@ -18,7 +18,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         GameStage gameWindow = new GameStage();
         primaryStage = gameWindow.getState();
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+        primaryStage.setFullScreen(false);
         primaryStage.setTitle(Config.GAME_NAME);
         primaryStage.show();
     }

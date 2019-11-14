@@ -33,32 +33,54 @@ public class Mountain extends VBox {
         }
 
         /*Xoá các tile nằm trên đường*/
-        for(int i = 0; i <= 4; i++) {
+        for(int i = 0; i <= 1; i++) {
+            for(int j = 0; j <= 13; j++)
+            mapTile[i][j] = null;
+        }
+
+        for(int i = 1; i <= 4; i++) {
+            mapTile[i][12] = null;
+            mapTile[i][13] = null;
+        }
+
+        for(int i = 13; i <= 17; i++) {
+            mapTile[3][i] = null;
+            mapTile[4][i] = null;
+        }
+
+        for(int i = 5; i <= 7; i++) {
+            mapTile[i][16] = null;
+            mapTile[i][17] = null;
+        }
+
+        for(int i = 10; i <= 15; i++) {
+            mapTile[6][i] = null;
+            mapTile[7][i] = null;
+        }
+
+        for(int i = 0; i <= 1; i++) {
+            mapTile[6][i] = null;
+            mapTile[7][i] = null;
+        }
+
+        for(int i = 4; i <= 7; i++) {
             mapTile[4][i] = null;
             mapTile[5][i] = null;
         }
 
-        for(int i = 6; i <= 8; i++) {
-            mapTile[i][3] = null;
-            mapTile[i][4] = null;
-        }
-
-        for(int i = 5; i <= 10; i++) {
+        for(int i = 4; i <= 7; i++) {
             mapTile[8][i] = null;
-        }
-
-        for(int i = 3; i <= 10; i++) {
             mapTile[9][i] = null;
         }
 
-        for(int i = 1; i <= 7; i++) {
-            mapTile[i][9] = null;
-            mapTile[i][10] = null;
+        for(int i = 4; i <= 9; i++) {
+            mapTile[i][2] = null;
+            mapTile[i][3] = null;
         }
 
-        for(int i = 11; i <= 14; i++) {
-            mapTile[1][i] = null;
-            mapTile[2][i] = null;
+        for(int i = 4; i <= 9; i++) {
+            mapTile[i][8] = null;
+            mapTile[i][9] = null;
         }
 
         /*Vẽ tile vào map*/

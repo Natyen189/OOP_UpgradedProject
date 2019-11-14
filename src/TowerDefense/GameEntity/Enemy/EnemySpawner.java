@@ -22,79 +22,79 @@ public class EnemySpawner extends Pane {
     public void spawnEnemy(int level) {
         switch (level) {
             case 0:
-                spawnByNumberAndType(5, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(10, GameEntity.EnemyType.NormalEnemy);
                 break;
             case 1:
-                spawnByNumberAndType(5, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(10, GameEntity.EnemyType.SmallerEnemy);
                 break;
             case 2:
-                spawnByNumberAndType(10, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(15, GameEntity.EnemyType.NormalEnemy);
                 break;
             case 3:
-                spawnByNumberAndType(10, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(15, GameEntity.EnemyType.NormalEnemy);
                 break;
             case 4:
-                spawnByNumberAndType(5, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 5:
-                spawnByNumberAndType(5, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 6:
-                spawnByNumberAndType(10, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(15, GameEntity.EnemyType.NormalEnemy);
                 break;
             case 7:
-                spawnByNumberAndType(7, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(12, GameEntity.EnemyType.SmallerEnemy);
                 break;
             case 8:
-                spawnByNumberAndType(12, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(17, GameEntity.EnemyType.NormalEnemy);
                 break;
             case 9:
-                spawnByNumberAndType(5, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(10, GameEntity.EnemyType.SmallerEnemy);
                 break;
             case 10:
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
                 break;
             case 11:
-                spawnByNumberAndType(12, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(17, GameEntity.EnemyType.NormalEnemy);
                 break;
             case 12:
-                spawnByNumberAndType(7, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(12, GameEntity.EnemyType.SmallerEnemy);
                 break;
             case 13:
-                spawnByNumberAndType(5, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 14:
-                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(15, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 15:
-                spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(15, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 16:
-                spawnByNumberAndType(10, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(15, GameEntity.EnemyType.SmallerEnemy);
                 break;
             case 17:
-                spawnByNumberAndType(7, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(12, GameEntity.EnemyType.SmallerEnemy);
                 break;
             case 18:
-                spawnByNumberAndType(12, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(17, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 19:
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
                 break;
             case 20:
-                spawnByNumberAndType(6, GameEntity.EnemyType.NormalEnemy);
-                spawnByNumberAndType(6, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(11, GameEntity.EnemyType.NormalEnemy);
+                spawnByNumberAndType(11, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 21:
-                spawnByNumberAndType(12, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(17, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 22:
-                spawnByNumberAndType(7, GameEntity.EnemyType.SmallerEnemy);
-                spawnByNumberAndType(6, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(12, GameEntity.EnemyType.SmallerEnemy);
+                spawnByNumberAndType(11, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 23:
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
-                spawnByNumberAndType(7, GameEntity.EnemyType.TankerEnemy);
+                spawnByNumberAndType(12, GameEntity.EnemyType.TankerEnemy);
                 break;
             case 24:
                 spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);

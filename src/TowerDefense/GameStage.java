@@ -6,8 +6,10 @@ import TowerDefense.Button.TowerButton;
 import TowerDefense.Button.UpgradeButton;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
+import TowerDefense.GameTile.Tower.Tower;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -35,6 +37,7 @@ public class GameStage {
         createRoad();
         createButton();
         createEnemy();
+        createPlayerStat();
     }
 
     public Stage getState() {
@@ -42,11 +45,16 @@ public class GameStage {
     }
 
     public void setBackgroundImage() {
-        File backGroundLocation = new File("Asset\\Background.png");
-        Image background = new Image(backGroundLocation.toURI().toString());
-        BackgroundImage gameBackground = new BackgroundImage(background, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        File backGroundLocation = new File("Asset\\Test1.png");
+        ImageView background = new ImageView(backGroundLocation.toURI().toString());
+        background.setFitHeight(800);
+        background.setPreserveRatio(true);
+        mainWindow.getChildren().add(background);
 
-        mainWindow.setBackground(new Background(gameBackground));
+//        ///////
+//        Map map = new Map();
+//        mainWindow.getChildren().add(map);
+
     }
 
     private void createButton() {
@@ -69,8 +77,8 @@ public class GameStage {
         File upgradeButtonPath = new File("Asset\\Upgrade.png");
         ImageView buttonImage = new ImageView(new Image(upgradeButtonPath.toURI().toString()));
         UpgradeButton upgradeButton = new UpgradeButton("", buttonImage);
-        upgradeButton.setLayoutX((float)Config.SCREEN_WIDTH - 290);
-        upgradeButton.setLayoutY((float)Config.SCREEN_HEIGHT - 400);
+        upgradeButton.setLayoutX((float)Config.SCREEN_WIDTH - 280);
+        upgradeButton.setLayoutY((float)Config.SCREEN_HEIGHT - 470);
         mainWindow.getChildren().add(upgradeButton);
     }
 
@@ -78,40 +86,40 @@ public class GameStage {
         File sellButtonPath = new File("Asset\\Sell.png");
         ImageView buttonImage = new ImageView(new Image(sellButtonPath.toURI().toString()));
         SellButton sellButton = new SellButton("", buttonImage);
-        sellButton.setLayoutX((float)Config.SCREEN_WIDTH - 130);
-        sellButton.setLayoutY((float)Config.SCREEN_HEIGHT - 400);
+        sellButton.setLayoutX((float)Config.SCREEN_WIDTH - 120);
+        sellButton.setLayoutY((float)Config.SCREEN_HEIGHT - 470);
         mainWindow.getChildren().add(sellButton);
     }
 
     private void createTowerButton() {
 
-        double startXPos = 1015.5;
+        double startXPos = 1210;
         double startYPos = 27;
 
-        TowerButton tower1 = new TowerButton(GameEntity.TowerType.NormalTower);
-        TowerButton tower2 = new TowerButton(GameEntity.TowerType.SniperTower);
-        TowerButton tower3 = new TowerButton(GameEntity.TowerType.MachineGun);
-        TowerButton tower4 = new TowerButton(GameEntity.TowerType.AirTower);
-        TowerButton tower5 = new TowerButton(GameEntity.TowerType.RayTower);
-        TowerButton tower6 = new TowerButton(GameEntity.TowerType.IceTurret);
+        TowerButton tower1 = new TowerButton(new Tower(GameEntity.TowerType.NormalTower));
+        TowerButton tower2 = new TowerButton(new Tower(GameEntity.TowerType.SniperTower));
+        TowerButton tower3 = new TowerButton(new Tower(GameEntity.TowerType.MachineGun));
+        TowerButton tower4 = new TowerButton(new Tower(GameEntity.TowerType.AirTower));
+        TowerButton tower5 = new TowerButton(new Tower(GameEntity.TowerType.RayTower));
+        TowerButton tower6 = new TowerButton(new Tower(GameEntity.TowerType.IceTurret));
 
         tower1.setLayoutX(startXPos);
         tower1.setLayoutY(startYPos);
 
-        tower2.setLayoutX(startXPos + 148);
+        tower2.setLayoutX(startXPos + 130);
         tower2.setLayoutY(startYPos + 2);
 
         tower3.setLayoutX(startXPos);
         tower3.setLayoutY(startYPos + 110);
 
-        tower4.setLayoutX(startXPos + 148);
+        tower4.setLayoutX(startXPos + 130);
         tower4.setLayoutY(startYPos + 117);
 
-        tower5.setLayoutX(startXPos);
-        tower5.setLayoutY(startYPos + 110*2-10);
+        tower5.setLayoutX(startXPos + 260);
+        tower5.setLayoutY(startYPos + 2);
 
-        tower6.setLayoutX(startXPos + 148);
-        tower6.setLayoutY(startYPos + 110*2-10);
+        tower6.setLayoutX(startXPos + 260);
+        tower6.setLayoutY(startYPos + 110);
 
         mainWindow.getChildren().add(tower1);
         mainWindow.getChildren().add(tower2);
@@ -127,19 +135,25 @@ public class GameStage {
         EnemySpawner enemySpawner = new EnemySpawner();
         mainWindow.getChildren().add(enemySpawner);
 
-        Timeline test  = new Timeline(new KeyFrame(Duration.seconds(6), event-> {
+        /*Khoảng cách giữa 2 wave là 6 giây*/
+        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(6), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
                 enemySpawner.spawnEnemy(EnemySpawner.level);
+                if(EnemySpawner.level < 30)
                 EnemySpawner.level += 1;
             }
         }));
-        test.setCycleCount(Animation.INDEFINITE);
-        test.play();
+        enemyTimeline.setCycleCount(Animation.INDEFINITE);
+        enemyTimeline.play();
     }
 
-    public void createRoad() {
+    private void createRoad() {
         Road roadPath = new Road();
         Mountain mountain = new Mountain();
+    }
+
+    private void createPlayerStat() {
+        PlayerStats playerStats = new PlayerStats();
     }
 }
