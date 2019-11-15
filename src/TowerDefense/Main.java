@@ -19,6 +19,7 @@ public class Main extends Application {
         GameStage gameWindow = new GameStage();
         primaryStage = gameWindow.getState();
         primaryStage.setResizable(true);
+        primaryStage.setMaximized(true);
         primaryStage.setFullScreen(false);
         primaryStage.setTitle(Config.GAME_NAME);
         primaryStage.show();

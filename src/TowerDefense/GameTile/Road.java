@@ -5,8 +5,8 @@ import TowerDefense.GameStage;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 
+/*Class tạo các hình chữ nhật trên đường đi để không cho tháp đặt vào*/
 public class Road extends VBox {
 
     public static final Rectangle[] roadPath = new Rectangle[10];

@@ -25,14 +25,19 @@ import java.io.File;
 public class GameStage {
 
     public static Pane mainWindow;
-    public static Scene scene;
+    public static Pane gameOverPane;
+    public static Scene mainScene;
+    public static Scene gameOverScene;
     public static Stage gameStage;
 
     public GameStage() {
         mainWindow = new Pane();
-        scene = new Scene(mainWindow, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+        gameOverPane = new Pane();
         gameStage = new Stage();
-        gameStage.setScene(scene);
+        mainScene = new Scene(mainWindow, gameStage.getMaxWidth(), gameStage.getMaxHeight());
+        gameOverScene = new Scene(gameOverPane, gameStage.getMaxWidth(), gameStage.getMaxHeight());
+        gameStage.setScene(mainScene);
+        createGameOverScene();
         setBackgroundImage();
         createRoad();
         createButton();
@@ -44,16 +49,37 @@ public class GameStage {
         return gameStage;
     }
 
+    public void createGameOverScene() {
+        File file = new File("Asset\\GameOver.jpg");
+        ImageView gameOverBackground = new ImageView(new Image(file.toURI().toString()));
+        gameOverBackground.setFitWidth(1540);
+        gameOverBackground.setPreserveRatio(true);
+        gameOverPane.getChildren().add(gameOverBackground);
+
+        File retryButtonLocation = new File("Asset\\Retry.png");
+        ImageView retryButtonImage = new ImageView(new Image(retryButtonLocation.toURI().toString()));
+        MenuButton retryButton = new MenuButton("", retryButtonImage, MenuButton.ButtonName.RetryButton);
+        retryButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 145);
+        retryButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 - 30);
+        gameOverPane.getChildren().add(retryButton);
+
+        File exitButtonLocation = new File("Asset\\ExitButton.png");
+        ImageView exitButtonImage = new ImageView(new Image(exitButtonLocation.toURI().toString()));
+        exitButtonImage.setFitWidth(236);
+        exitButtonImage.setFitHeight(45);
+        MenuButton exitButton = new MenuButton("", exitButtonImage, MenuButton.ButtonName.ExitButton);
+        exitButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 130);
+        exitButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 + 40);
+        gameOverPane.getChildren().add(exitButton);
+
+    }
+
     public void setBackgroundImage() {
-        File backGroundLocation = new File("Asset\\Test1.png");
+        File backGroundLocation = new File("Asset\\Background.png");
         ImageView background = new ImageView(backGroundLocation.toURI().toString());
         background.setFitHeight(800);
         background.setPreserveRatio(true);
         mainWindow.getChildren().add(background);
-
-//        ///////
-//        Map map = new Map();
-//        mainWindow.getChildren().add(map);
 
     }
 
@@ -67,10 +93,35 @@ public class GameStage {
     private void createMenuButton() {
         File startButtonLocation = new File("Asset\\PlayButton.png");
         ImageView buttonImage = new ImageView(new Image(startButtonLocation.toURI().toString()));
-        MenuButton startButton = new MenuButton("", buttonImage);
-        startButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 180);
-        startButton.setLayoutY((float)Config.SCREEN_HEIGHT/2);
+        MenuButton startButton = new MenuButton("", buttonImage, MenuButton.ButtonName.PlayButton);
+        startButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 195);
+        startButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 - 100);
         mainWindow.getChildren().add(startButton);
+
+        File guideButtonLocation = new File("Asset\\GuideButton.png");
+        ImageView guideButtonImage = new ImageView(new Image(guideButtonLocation.toURI().toString()));
+        guideButtonImage.setFitWidth(236);
+        guideButtonImage.setFitHeight(45);
+        MenuButton guideButton = new MenuButton("", guideButtonImage, MenuButton.ButtonName.GuideButton);
+        guideButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 180);
+        guideButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 - 30);
+        mainWindow.getChildren().add(guideButton);
+
+        File exitButtonLocation = new File("Asset\\ExitButton.png");
+        ImageView exitButtonImage = new ImageView(new Image(exitButtonLocation.toURI().toString()));
+        exitButtonImage.setFitWidth(206);
+        exitButtonImage.setFitHeight(39);
+        MenuButton exitButton = new MenuButton("", exitButtonImage, MenuButton.ButtonName.ExitButton);
+        exitButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 165);
+        exitButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 + 40);
+        mainWindow.getChildren().add(exitButton);
+
+        startButton.setOnMouseReleased(event -> {
+            guideButton.setDisable(true);
+            guideButton.setOpacity(0);
+            exitButton.setDisable(true);
+            exitButton.setOpacity(0);
+        });
     }
 
     private void createUpgradeButton() {

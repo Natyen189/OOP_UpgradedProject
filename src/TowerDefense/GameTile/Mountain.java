@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/*Class để tạo các tile hình vuông khi đặt tháp*/
 public class Mountain extends VBox {
     public static Rectangle [][]mapTile = new Rectangle[Config.TILE_VERTICAL][Config.TILE_HORIZONTAL];
     private double xPos = 0;

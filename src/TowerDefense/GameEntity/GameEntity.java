@@ -30,7 +30,7 @@ public abstract class GameEntity extends Pane {
 
     }
 
-    public void move() {
+    public void handleAnimation() {
 
     }
 

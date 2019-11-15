@@ -17,10 +17,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/*Class sẽ để hiển thị những thông số cơ bản của nguoiwf chơi như: mạng, tiền, ...*/
 public class PlayerStats {
 
     public static int health = 20;
-    public static int money = 400;
+    public static int money = 12000;
+    private static boolean restart = false;
     Text level;
     Text lives;
     Text playerMoney;
@@ -28,6 +30,7 @@ public class PlayerStats {
     public PlayerStats() {
         createPlayerLabel();
         updateStats();
+        restartGame();
     }
 
     private void createPlayerLabel() {
@@ -66,9 +69,6 @@ public class PlayerStats {
             health -= 1;
             System.out.println("Enemy's breaking in. Player health: " + health + ".");
         }
-        else {
-            restartGame();
-        }
     }
 
     private void updateStats() {
@@ -83,6 +83,13 @@ public class PlayerStats {
     }
 
     private static void restartGame() {
-
+        Timeline restartTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+            if(health == 0 && !restart) {
+                GameStage.gameStage.setScene(GameStage.gameOverScene);
+            }
+        }));
+        restartTimeline.setCycleCount(Animation.INDEFINITE);
+        restartTimeline.setAutoReverse(false);
+        restartTimeline.play();
     }
 }

@@ -11,6 +11,8 @@ import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
 import javafx.animation.*;
 import javafx.geometry.Bounds;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +22,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.security.Key;
 
 public class Tower extends GameEntity {
     private int TowerValue;
@@ -153,6 +156,7 @@ public class Tower extends GameEntity {
                     canSpawnBullet = false;
                 }
             }
+
         });
     }
 
@@ -168,24 +172,43 @@ public class Tower extends GameEntity {
 
     /*Kiểm tra va chạm với đường đi*/
     private boolean collideWithRoad() {
+
+        ColorAdjust[]colorAdjust = new ColorAdjust[2];
+        colorAdjust[0] = new ColorAdjust();
+        colorAdjust[1] = new ColorAdjust();
+        colorAdjust[0].setBrightness(-10);
+        colorAdjust[1].setBrightness(0);
+
         for(int i = 0; i < Road.roadPath.length; i++) {
-            if(this.getBoundsInParent().intersects(Road.roadPath[i].getBoundsInParent())) {
+            if(this.getBoundsInParent().intersects(Road.roadPath[i].getBoundsInParent()) && draggable) {
                 System.out.println("Can't place tower on road.");
+                image.setEffect(colorAdjust[0]);
                 return true;
             }
         }
+
+        image.setEffect(colorAdjust[1]);
         return false;
     }
 
     /*Kiểm tra xem có bị trùng chỗ đặt tháp không*/
     private boolean collideWithSelf() {
+
+        ColorAdjust[]colorAdjust = new ColorAdjust[2];
+        colorAdjust[0] = new ColorAdjust();
+        colorAdjust[1] = new ColorAdjust();
+        colorAdjust[0].setBrightness(-10);
+        colorAdjust[1].setBrightness(0);
+
         for(int i = TowerButton.towerList.size() - 2; i >= 0; i--) {
-            if(this.getBoundsInParent().intersects(TowerButton.towerList.get(i).getTowerBound())) {
+            if(this.getBoundsInParent().intersects(TowerButton.towerList.get(i).getTowerBound()) && draggable) {
                 System.out.println("This position is occupied.");
+                image.setEffect(colorAdjust[0]);
                 return true;
             }
         }
 
+        image.setEffect(colorAdjust[1]);
         return false;
     }
 
@@ -239,8 +262,8 @@ public class Tower extends GameEntity {
 
         line.setStartX(this.getLayoutX() + this.getWidth()/ 2);
         line.setStartY(this.getLayoutY() + this.getHeight()/ 2);
-        line.setEndX(targetEnemy.getXPos() + targetEnemy.getWidth()/2);
-        line.setEndY(targetEnemy.getYPos() + targetEnemy.getHeight()/2);
+        line.setEndX(targetEnemy.getXPos() + targetEnemy.getImageWidth()/2);
+        line.setEndY(targetEnemy.getYPos() + targetEnemy.getImageHeight()/2);
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setNode(bullet);
@@ -332,6 +355,14 @@ public class Tower extends GameEntity {
         towerStats.onDestroy();
         TowerButton.towerList.remove(this);
     }
+
+//    private void autoDestroy() {
+//        if (draggable) {
+//            onDestroy();
+//            /*Hoàn lại tiền cho người chơi*/
+//            PlayerStats.money += this.TowerValue;
+//        }
+//    }
 
     public int getTowerValue() {
         return TowerValue;

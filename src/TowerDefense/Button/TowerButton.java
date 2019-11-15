@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 
+/*Class để hiển thị những thông số của tháp như: sát thương, tiền nâng cấp, tầm bắn, ...*/
 public class TowerButton extends GameEntity {
 
     private TowerType towerType;
@@ -34,27 +35,27 @@ public class TowerButton extends GameEntity {
     public void loadImage(TowerType type) {
         switch (type) {
             case NormalTower:
-                imageLocation = new File("Asset\\TowerTile\\1.png");
+                imageLocation = new File("Asset\\TowerTile\\1B.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case SniperTower:
-                imageLocation = new File("Asset\\TowerTile\\2.png");
+                imageLocation = new File("Asset\\TowerTile\\2B.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case MachineGun:
-                imageLocation = new File("Asset\\TowerTile\\3.png");
+                imageLocation = new File("Asset\\TowerTile\\3B.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case AirTower:
-                imageLocation = new File("Asset\\TowerTile\\4.png");
+                imageLocation = new File("Asset\\TowerTile\\4B.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case RayTower:
-                imageLocation = new File("Asset\\TowerTile\\5.png");
+                imageLocation = new File("Asset\\TowerTile\\5B.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
             case IceTurret:
-                imageLocation = new File("Asset\\TowerTile\\6.png");
+                imageLocation = new File("Asset\\TowerTile\\6B.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 break;
         }

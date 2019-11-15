@@ -38,6 +38,7 @@ public class EnemySpawner extends Pane {
                 break;
             case 5:
                 spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
+                castEnemySpecial(1, 2);
                 break;
             case 6:
                 spawnByNumberAndType(15, GameEntity.EnemyType.NormalEnemy);
@@ -53,6 +54,7 @@ public class EnemySpawner extends Pane {
                 break;
             case 10:
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
+                castEnemySpecial(2, 3);
                 break;
             case 11:
                 spawnByNumberAndType(17, GameEntity.EnemyType.NormalEnemy);
@@ -65,6 +67,7 @@ public class EnemySpawner extends Pane {
                 break;
             case 14:
                 spawnByNumberAndType(15, GameEntity.EnemyType.TankerEnemy);
+                castEnemySpecial(2, 2);
                 break;
             case 15:
                 spawnByNumberAndType(15, GameEntity.EnemyType.TankerEnemy);
@@ -80,6 +83,7 @@ public class EnemySpawner extends Pane {
                 break;
             case 19:
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
+                castEnemySpecial(3, 2);
                 break;
             case 20:
                 spawnByNumberAndType(11, GameEntity.EnemyType.NormalEnemy);
@@ -98,6 +102,7 @@ public class EnemySpawner extends Pane {
                 break;
             case 24:
                 spawnByNumberAndType(10, GameEntity.EnemyType.TankerEnemy);
+                castEnemySpecial(2, 2);
                 break;
             case 25:
                 spawnByNumberAndType(7, GameEntity.EnemyType.TankerEnemy);
@@ -118,12 +123,13 @@ public class EnemySpawner extends Pane {
                 spawnByNumberAndType(1, GameEntity.EnemyType.BossEnemy);
                 spawnByNumberAndType(5, GameEntity.EnemyType.TankerEnemy);
                 spawnByNumberAndType(5, GameEntity.EnemyType.SmallerEnemy);
+                castEnemySpecial(2, 3);
                 break;
         }
 
     }
 
-    public void spawnByNumberAndType(int numberOfEnemySpawned, GameEntity.EnemyType enemyType) {
+    private void spawnByNumberAndType(int numberOfEnemySpawned, GameEntity.EnemyType enemyType) {
 
         timeline  = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Enemy tempEnemy = new Enemy(enemyType);
@@ -135,5 +141,16 @@ public class EnemySpawner extends Pane {
         timeline.play();
 
         System.out.println("Enemy: " + enemyType + ", Number: " + numberOfEnemySpawned);
+    }
+
+    private void castEnemySpecial(int numberOfTarget, int numberOfLoop) {
+        EnemySpecial test = new EnemySpecial();
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+            test.cast(numberOfTarget);
+        }));
+        timeline.setCycleCount(numberOfLoop);
+        timeline.setAutoReverse(false);
+        timeline.play();
     }
 }

@@ -3,18 +3,14 @@ package TowerDefense.GameEntity.Enemy;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameEntity.Player.PlayerStats;
-import TowerDefense.GameStage;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
 
@@ -35,7 +31,7 @@ public class Enemy extends GameEntity {
         generateHealthBar();
         loadImage(type);
         this.getChildren().add(image);
-        move(type);
+        handleAnimation(type);
     }
 
     public void loadImage(EnemyType type) {
@@ -91,7 +87,7 @@ public class Enemy extends GameEntity {
         }
     }
 
-    public void move(EnemyType enemyType) {
+    public void handleAnimation(EnemyType enemyType) {
 
         Path movePath;
         int random = (int)(Math.random()*11);
@@ -234,6 +230,14 @@ public class Enemy extends GameEntity {
 
     public double getYPos() {
         return image.getTranslateY();
+    }
+
+    public double getImageWidth() {
+        return this.getWidth();
+    }
+
+    public double getImageHeight() {
+        return this.getHeight();
     }
 
     public Bounds getBound() {
