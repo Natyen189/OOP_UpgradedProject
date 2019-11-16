@@ -25,7 +25,7 @@ import java.util.ArrayList;
 /*Class sẽ để hiển thị những thông số cơ bản của nguoiwf chơi như: mạng, tiền, ...*/
 public class PlayerStats {
 
-    public static int health = 2;
+    public static int health = 20;
     public static int money = 12000;
     public static boolean restart = false;
     Text level;
@@ -127,7 +127,7 @@ public class PlayerStats {
     }
 
     public static void resetDefaultValue() {
-        health = 2;
+        health = 20;
         money = 12000;
         EnemySpawner.level = 0;
         restart = false;

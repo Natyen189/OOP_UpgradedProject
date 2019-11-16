@@ -4,11 +4,13 @@ import TowerDefense.Button.MenuButton;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameStage;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -71,14 +73,21 @@ public class FreezeSpecial extends PlayerSpecial {
     void displayText() {
         actionText = new Text();
         actionText.setText("Enjoy while it lasts...");
-        actionText.setStroke(Color.BLACK);
-        actionText.setStrokeWidth(0.3);
+        actionText.setFont(Font.loadFont("file:Asset\\Font\\UTM BanqueR.ttf", 11));
+        actionText.setStroke(Color.DARKBLUE);
+        actionText.setStrokeWidth(0.5);
         actionText.setFill(Color.WHITE);
         actionText.setScaleX(4);
         actionText.setScaleY(4);
         actionText.setLayoutX(Config.TILE_SIZE*9);
         actionText.setLayoutY(Config.TILE_SIZE*5);
         GameStage.mainWindow.getChildren().add(actionText);
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), actionText);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.4);
+        fadeTransition.setCycleCount(7);
+        fadeTransition.play();
     }
 
     @Override
