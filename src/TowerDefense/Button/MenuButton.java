@@ -1,6 +1,7 @@
 package TowerDefense.Button;
 
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
+import TowerDefense.GameEntity.Player.PlayerStats;
 import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -16,7 +17,7 @@ public class MenuButton extends GameButton {
         ExitButton
     }
 
-    static public boolean startGame = false;
+    public static boolean startGame = false;
     private ButtonName buttonName;
 
     public MenuButton(String imageLocation, Node buttonImage, ButtonName buttonName) {
@@ -38,6 +39,9 @@ public class MenuButton extends GameButton {
                 break;
 
             case RetryButton:
+                setOnMouseClicked(mouseEvent -> {
+                    PlayerStats.resetDefaultValue();
+                });
                 break;
 
             case GuideButton:

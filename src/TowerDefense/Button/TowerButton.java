@@ -97,7 +97,7 @@ public class TowerButton extends GameEntity {
                     temp.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
                     temp.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
                     towerList.add(temp);
-                    GameStage.mainWindow.getChildren().add(towerList.get(towerList.size()-1));
+                    GameStage.mainWindow.getChildren().add(temp);
                     System.out.println(towerType + " spawned.");
                 }
             }

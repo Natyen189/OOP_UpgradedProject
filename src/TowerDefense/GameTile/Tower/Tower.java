@@ -36,7 +36,8 @@ public class Tower extends GameEntity {
     private boolean canSpawnBullet;
     public boolean isSelected;
     private TowerType currentType;
-    private Circle fireRange = null;
+    private Timeline bulletTimeline = null;
+    public Circle fireRange = null;
     public TowerStats towerStats;
 
     public Tower(TowerType towerType) {
@@ -215,23 +216,27 @@ public class Tower extends GameEntity {
     /*Bắn đạn*/
     private void spawnBullet() {
 
-        Timeline bulletTimeline = new Timeline(new KeyFrame(Duration.seconds(ShootSpeed), event -> {
+        bulletTimeline = new Timeline(new KeyFrame(Duration.seconds(ShootSpeed), event -> {
             if(this.image != null) {
                 Enemy targetEnemy = null;
-                for(int i = 0; i < EnemySpawner.enemies.size(); i++) {
-                    /*Kiểm tra xem quân dịch có ở trong tầm bắn không*/
-                    if(EnemySpawner.enemies.get(i) != null) {
-                        if (EnemySpawner.enemies.get(i).getBound().intersects(fireRange.getBoundsInParent())) {
-                            targetEnemy = EnemySpawner.enemies.get(i);
-                            if (targetEnemy.currentType == EnemyType.SmallerEnemy && (this.currentType != TowerType.AirTower && this.currentType != TowerType.RayTower)) return;
-                            if (targetEnemy.currentType != EnemyType.SmallerEnemy && this.currentType == TowerType.AirTower) return;
-                            else
-                                break;
+                if(EnemySpawner.enemies != null) {
+                    for (int i = 0; i < EnemySpawner.enemies.size(); i++) {
+                        /*Kiểm tra xem quân dịch có ở trong tầm bắn không*/
+                        if (EnemySpawner.enemies.get(i) != null && fireRange != null) {
+                            if (EnemySpawner.enemies.get(i).getBound().intersects(fireRange.getBoundsInParent())) {
+                                targetEnemy = EnemySpawner.enemies.get(i);
+                                if (targetEnemy.currentType == EnemyType.SmallerEnemy && (this.currentType != TowerType.AirTower && this.currentType != TowerType.RayTower))
+                                    return;
+                                if (targetEnemy.currentType != EnemyType.SmallerEnemy && this.currentType == TowerType.AirTower)
+                                    return;
+                                else
+                                    break;
+                            }
                         }
                     }
                 }
 
-                if(targetEnemy != null) {
+                if (targetEnemy != null) {
                     /*Bắn đạn theo hướng quân địch*/
                     generateBulletPath(targetEnemy);
                     /*Xoay tháp theo hướng quân địch*/
@@ -350,19 +355,26 @@ public class Tower extends GameEntity {
 
     public void onDestroy() {
         GameStage.mainWindow.getChildren().remove(fireRange);
+        GameStage.mainWindow.getChildren().remove(this);
+        fireRange = null;
         this.getChildren().remove(image);
         image = null;
         towerStats.onDestroy();
+        bulletTimeline.stop();
+        bulletTimeline = null;
         TowerButton.towerList.remove(this);
     }
 
-//    private void autoDestroy() {
-//        if (draggable) {
-//            onDestroy();
-//            /*Hoàn lại tiền cho người chơi*/
-//            PlayerStats.money += this.TowerValue;
-//        }
-//    }
+    public void OnDestroyRestart() {
+        GameStage.mainWindow.getChildren().remove(fireRange);
+        GameStage.mainWindow.getChildren().remove(this);
+        fireRange = null;
+        this.getChildren().remove(image);
+        image = null;
+        towerStats.onDestroy();
+        bulletTimeline.stop();
+        bulletTimeline = null;
+    }
 
     public int getTowerValue() {
         return TowerValue;
@@ -390,6 +402,10 @@ public class Tower extends GameEntity {
 
     public double getShootRange() {
         return ShootRange;
+    }
+
+    public Circle getFireRange() {
+        return fireRange;
     }
 
     public Bounds getTowerBound() {

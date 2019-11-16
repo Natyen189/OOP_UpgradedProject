@@ -87,8 +87,10 @@ public class Mountain extends VBox {
         /*Vẽ tile vào map*/
         for(int i = 0; i < Config.TILE_VERTICAL; i++) {
             for(int j = 0; j < Config.TILE_HORIZONTAL; j++) {
-                if(mapTile[i][j] != null)
-                GameStage.mainWindow.getChildren().add(mapTile[i][j]);
+                if(mapTile[i][j] != null) {
+                    mapTile[i][j].setVisible(false);
+                    GameStage.mainWindow.getChildren().add(mapTile[i][j]);
+                }
             }
         }
     }

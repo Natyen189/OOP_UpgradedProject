@@ -6,6 +6,8 @@ import TowerDefense.Button.TowerButton;
 import TowerDefense.Button.UpgradeButton;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.PlayerSpecial.FreezeSpecial;
+import TowerDefense.GameEntity.Player.PlayerSpecial.HotPotSpecial;
 import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
@@ -43,6 +45,7 @@ public class GameStage {
         createButton();
         createEnemy();
         createPlayerStat();
+        createPlayerSpecial();
     }
 
     public Stage getState() {
@@ -190,9 +193,11 @@ public class GameStage {
         Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(6), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
-                enemySpawner.spawnEnemy(EnemySpawner.level);
-                if(EnemySpawner.level < 30)
-                EnemySpawner.level += 1;
+                if(EnemySpawner.enemies != null) {
+                    enemySpawner.spawnEnemy(EnemySpawner.level);
+                    if (EnemySpawner.level < 30)
+                        EnemySpawner.level += 1;
+                }
             }
         }));
         enemyTimeline.setCycleCount(Animation.INDEFINITE);
@@ -206,5 +211,13 @@ public class GameStage {
 
     private void createPlayerStat() {
         PlayerStats playerStats = new PlayerStats();
+    }
+
+    private void createPlayerSpecial() {
+        HotPotSpecial special1 = new HotPotSpecial();
+        FreezeSpecial special2 = new FreezeSpecial();
+
+        mainWindow.getChildren().add(special1);
+        mainWindow.getChildren().add(special2);
     }
 }

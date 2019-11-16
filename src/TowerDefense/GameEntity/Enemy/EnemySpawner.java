@@ -132,10 +132,12 @@ public class EnemySpawner extends Pane {
     private void spawnByNumberAndType(int numberOfEnemySpawned, GameEntity.EnemyType enemyType) {
 
         timeline  = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            Enemy tempEnemy = new Enemy(enemyType);
-            tempEnemy.increaseHealthByLevel(level);
-            enemies.add(tempEnemy);
-            GameStage.mainWindow.getChildren().add(enemies.get(enemies.size()-1));
+            if(enemies != null) {
+                Enemy tempEnemy = new Enemy(enemyType);
+                tempEnemy.increaseHealthByLevel(level);
+                enemies.add(tempEnemy);
+                GameStage.mainWindow.getChildren().add(enemies.get(enemies.size()-1));
+            }
         }));
         timeline.setCycleCount(numberOfEnemySpawned);
         timeline.play();

@@ -1,8 +1,11 @@
 package TowerDefense.GameEntity.Player;
 
+import TowerDefense.Button.TowerButton;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameStage;
+import TowerDefense.GameTile.Tower.Tower;
+import TowerDefense.GameTile.Tower.TowerStats;
 import TowerDefense.Main;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -17,12 +20,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 /*Class sẽ để hiển thị những thông số cơ bản của nguoiwf chơi như: mạng, tiền, ...*/
 public class PlayerStats {
 
-    public static int health = 20;
+    public static int health = 2;
     public static int money = 12000;
-    private static boolean restart = false;
+    public static boolean restart = false;
     Text level;
     Text lives;
     Text playerMoney;
@@ -86,10 +91,49 @@ public class PlayerStats {
         Timeline restartTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             if(health == 0 && !restart) {
                 GameStage.gameStage.setScene(GameStage.gameOverScene);
+                restart = true;
+                cleanUp();
             }
         }));
         restartTimeline.setCycleCount(Animation.INDEFINITE);
         restartTimeline.setAutoReverse(false);
         restartTimeline.play();
     }
+
+    private static void cleanUp() {
+        EnemySpawner.timeline.stop();
+
+        if(EnemySpawner.enemies != null) {
+            for (int i = 0; i < EnemySpawner.enemies.size(); i++) {
+                EnemySpawner.enemies.get(i).pathTransition.stop();
+            }
+
+            for (int i = 0; i < EnemySpawner.enemies.size(); i++) {
+                GameStage.mainWindow.getChildren().remove(EnemySpawner.enemies.get(i));
+                EnemySpawner.enemies.get(i).OnDestroyRestart();
+            }
+        }
+
+        if(TowerButton.towerList != null) {
+            for (int i = 0; i < TowerButton.towerList.size(); i++) {
+                if(TowerButton.towerList.get(i) != null) {
+                    TowerButton.towerList.get(i).OnDestroyRestart();
+                }
+            }
+        }
+
+        EnemySpawner.enemies = null;
+        TowerButton.towerList = null;
+    }
+
+    public static void resetDefaultValue() {
+        health = 2;
+        money = 12000;
+        EnemySpawner.level = 0;
+        restart = false;
+        EnemySpawner.enemies = new ArrayList<>();
+        TowerButton.towerList = new ArrayList<>();
+        GameStage.gameStage.setScene(GameStage.mainScene);
+    }
+
 }

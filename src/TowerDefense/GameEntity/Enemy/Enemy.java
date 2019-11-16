@@ -24,7 +24,7 @@ public class Enemy extends GameEntity {
     private int value;
     public EnemyType currentType;
     private ProgressBar healthBar;
-    private PathTransition pathTransition;
+    public PathTransition pathTransition;
 
     public Enemy(EnemyType type) {
         currentType = type;
@@ -32,6 +32,7 @@ public class Enemy extends GameEntity {
         loadImage(type);
         this.getChildren().add(image);
         handleAnimation(type);
+        autoDestroy();
     }
 
     public void loadImage(EnemyType type) {
@@ -153,8 +154,10 @@ public class Enemy extends GameEntity {
         pathTransition.setAutoReverse(false);
         /*Quân địch khi đi đến cuối đường sẽ bị hủy và người chơi bị trừ máu*/
         pathTransition.setOnFinished(actionEvent -> {
-            if(!this.outOfHealth())
-            PlayerStats.subtractHealth();
+            if(!this.outOfHealth()) {
+                if(!PlayerStats.restart)
+                PlayerStats.subtractHealth();
+            }
             onDestroy();
         });
         pathTransition.play();
@@ -170,7 +173,25 @@ public class Enemy extends GameEntity {
         this.getChildren().remove(healthBar);
         image = null;
         healthBar = null;
+        if(EnemySpawner.enemies != null)
         EnemySpawner.enemies.remove(this);
+    }
+
+    public void OnDestroyRestart() {
+        this.getChildren().remove(image);
+        this.getChildren().remove(healthBar);
+        image = null;
+        healthBar = null;
+    }
+
+    public void autoDestroy() {
+        Timeline destroyTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+            if(outOfHealth()) onDestroy();
+        }));
+        destroyTimeline.setCycleCount(Animation.INDEFINITE);
+        destroyTimeline.setAutoReverse(false);
+        destroyTimeline.play();
+
     }
 
     private void generateHealthBar() {
@@ -246,6 +267,10 @@ public class Enemy extends GameEntity {
 
     public int getValue() {
         return value;
+    }
+
+    public double getArmor() {
+        return armor;
     }
 
     public void increaseHealthByLevel(int level) {

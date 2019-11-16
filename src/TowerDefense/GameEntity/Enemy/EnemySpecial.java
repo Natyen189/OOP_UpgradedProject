@@ -42,7 +42,7 @@ public class EnemySpecial extends Pane {
 
     public void cast(int numberOfTarget) {
 
-        if(TowerButton.towerList.size() >= numberOfTarget) {
+        if(TowerButton.towerList != null && TowerButton.towerList.size() >= numberOfTarget) {
             Random randomIndex = new Random();
             targetTower = new ArrayList<>();
 
@@ -86,10 +86,11 @@ public class EnemySpecial extends Pane {
     }
 
     private void destroyTower(Tower target) {
-
-        for(int i = 0; i < TowerButton.towerList.size(); i++) {
-            if(target == TowerButton.towerList.get(i)) {
-                TowerButton.towerList.get(i).onDestroy();
+        if(TowerButton.towerList != null) {
+            for (int i = 0; i < TowerButton.towerList.size(); i++) {
+                if (target == TowerButton.towerList.get(i)) {
+                    TowerButton.towerList.get(i).onDestroy();
+                }
             }
         }
     }

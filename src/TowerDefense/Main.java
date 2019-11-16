@@ -1,5 +1,6 @@
 package TowerDefense;
 
+import TowerDefense.GameEntity.Player.PlayerStats;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -15,7 +16,7 @@ import java.util.ResourceBundle;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         GameStage gameWindow = new GameStage();
         primaryStage = gameWindow.getState();
         primaryStage.setResizable(true);
