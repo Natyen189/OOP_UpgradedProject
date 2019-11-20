@@ -94,6 +94,7 @@ public class HotPotSpecial extends PlayerSpecial {
                         EnemySpawner.enemies.get(i).subtractHealth(0.5*(EnemySpawner.enemies.get(i).getArmor()));
                         countdownBar.setProgress(0);
                     }
+                    canCastSpecial = true;
                     displayExplosion();
                     resetSpecial();
                 });
@@ -139,7 +140,10 @@ public class HotPotSpecial extends PlayerSpecial {
         Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(0.07), event -> test.setImage(explode[frame++])));
         displayTimeline.setCycleCount(explode.length);
         displayTimeline.setAutoReverse(false);
-        displayTimeline.setOnFinished(event-> GameStage.mainWindow.getChildren().remove(test));
+        displayTimeline.setOnFinished(event-> {
+            GameStage.mainWindow.getChildren().remove(test);
+            frame = 0;
+        });
         displayTimeline.play();
     }
 

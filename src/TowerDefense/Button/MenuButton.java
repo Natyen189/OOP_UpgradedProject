@@ -1,18 +1,25 @@
 package TowerDefense.Button;
 
+import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.Player.PlayerStats;
+import TowerDefense.GameStage;
 import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
+
+import java.io.File;
 
 public class MenuButton extends GameButton {
 
     public enum ButtonName {
         PlayButton,
-        GuideButton,
         RetryButton,
         ExitButton
     }
@@ -26,7 +33,7 @@ public class MenuButton extends GameButton {
         setMouseOnClick();
     }
 
-    public void setMouseOnClick() {
+    private void setMouseOnClick() {
 
         switch (buttonName) {
             case PlayButton:
@@ -44,9 +51,6 @@ public class MenuButton extends GameButton {
                 });
                 break;
 
-            case GuideButton:
-                break;
-
             case ExitButton:
                 setOnMouseClicked(mouseEvent -> {
                     Platform.exit();
@@ -55,4 +59,5 @@ public class MenuButton extends GameButton {
                 break;
         }
     }
+
 }

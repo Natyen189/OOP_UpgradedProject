@@ -70,6 +70,7 @@ public abstract class PlayerSpecial extends VBox {
         Timeline resetTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if(PlayerStats.restart) {
                 countdownBar.setProgress(1);
+                canCastSpecial = true;
             }
         }));
         resetTimeline.setCycleCount(Animation.INDEFINITE);

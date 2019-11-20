@@ -5,6 +5,7 @@ import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.Enemy;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.HighScore;
 import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameStage;
 import TowerDefense.GameTile.Mountain;
@@ -283,6 +284,7 @@ public class Tower extends GameEntity {
             }
             else {
                 PlayerStats.money += targetEnemy.getValue();
+                HighScore.playerScore += targetEnemy.getValue()*targetEnemy.getArmor();
                 targetEnemy.onDestroy();
             }
             bullet.onDestroy();
@@ -372,6 +374,7 @@ public class Tower extends GameEntity {
         this.getChildren().remove(image);
         image = null;
         towerStats.onDestroy();
+        if(bulletTimeline != null)
         bulletTimeline.stop();
         bulletTimeline = null;
     }

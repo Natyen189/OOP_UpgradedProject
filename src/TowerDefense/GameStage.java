@@ -1,20 +1,16 @@
 package TowerDefense;
 
-import TowerDefense.Button.MenuButton;
-import TowerDefense.Button.SellButton;
-import TowerDefense.Button.TowerButton;
-import TowerDefense.Button.UpgradeButton;
+import TowerDefense.Button.*;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.HighScore;
 import TowerDefense.GameEntity.Player.PlayerSpecial.FreezeSpecial;
 import TowerDefense.GameEntity.Player.PlayerSpecial.HotPotSpecial;
 import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
 import TowerDefense.GameTile.Tower.Tower;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 
 public class GameStage {
 
@@ -94,6 +91,7 @@ public class GameStage {
     }
 
     private void createMenuButton() {
+
         File startButtonLocation = new File("Asset\\PlayButton.png");
         ImageView buttonImage = new ImageView(new Image(startButtonLocation.toURI().toString()));
         MenuButton startButton = new MenuButton("", buttonImage, MenuButton.ButtonName.PlayButton);
@@ -105,7 +103,7 @@ public class GameStage {
         ImageView guideButtonImage = new ImageView(new Image(guideButtonLocation.toURI().toString()));
         guideButtonImage.setFitWidth(236);
         guideButtonImage.setFitHeight(45);
-        MenuButton guideButton = new MenuButton("", guideButtonImage, MenuButton.ButtonName.GuideButton);
+        GuideButton guideButton = new GuideButton("", guideButtonImage);
         guideButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 180);
         guideButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 - 30);
         mainWindow.getChildren().add(guideButton);
@@ -122,9 +120,11 @@ public class GameStage {
         startButton.setOnMouseReleased(event -> {
             guideButton.setDisable(true);
             guideButton.setOpacity(0);
+            guideButton.guideImage.setVisible(false);
             exitButton.setDisable(true);
             exitButton.setOpacity(0);
         });
+
     }
 
     private void createUpgradeButton() {
@@ -190,7 +190,7 @@ public class GameStage {
         mainWindow.getChildren().add(enemySpawner);
 
         /*Khoảng cách giữa 2 wave là 6 giây*/
-        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(15), event-> {
+        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(2), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
                 if(EnemySpawner.enemies != null) {

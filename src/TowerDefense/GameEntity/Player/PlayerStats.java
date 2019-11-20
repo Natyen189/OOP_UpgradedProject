@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /*Class sẽ để hiển thị những thông số cơ bản của nguoiwf chơi như: mạng, tiền, ...*/
@@ -90,6 +91,12 @@ public class PlayerStats {
     private static void restartGame() {
         Timeline restartTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             if(health == 0 && !restart) {
+                try {
+                    HighScore.writeScore();
+                    updateHighScore();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 GameStage.gameStage.setScene(GameStage.gameOverScene);
                 restart = true;
                 cleanUp();
@@ -98,6 +105,11 @@ public class PlayerStats {
         restartTimeline.setCycleCount(Animation.INDEFINITE);
         restartTimeline.setAutoReverse(false);
         restartTimeline.play();
+    }
+
+    private static void updateHighScore() throws IOException {
+        HighScore test = new HighScore();
+        GameStage.gameOverPane.getChildren().add(test);
     }
 
     private static void cleanUp() {
