@@ -8,8 +8,6 @@ import java.io.File;
 
 public class Bullet extends GameEntity {
 
-    private float speed;
-
     public Bullet(GameEntity.TowerType towerType) {
         loadBulletImage(towerType);
         this.getChildren().add(image);

@@ -190,7 +190,7 @@ public class GameStage {
         mainWindow.getChildren().add(enemySpawner);
 
         /*Khoảng cách giữa 2 wave là 6 giây*/
-        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(2), event-> {
+        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(10), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
                 if(EnemySpawner.enemies != null) {

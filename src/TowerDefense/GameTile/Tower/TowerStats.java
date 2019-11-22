@@ -101,7 +101,7 @@ public class TowerStats {
                 towerStats[0] = new Label("Tower Special: " + "\n" + "Finally a tower that can" + "\n" + "shoot all types of enemy.");
                 break;
             case IceTurret:
-                towerStats[0] = new Label("Tower Special: " + "\n" + "It shoot sand, not ice." + "\n");
+                towerStats[0] = new Label("Tower Special: " + "\n" + "Slow down your enemies" + "\n" + "to buy you some time.");
                 break;
         }
         towerStats[0].setLayoutX(1240);

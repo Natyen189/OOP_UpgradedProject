@@ -12,6 +12,7 @@ import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
 import javafx.animation.*;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
@@ -38,7 +39,8 @@ public class Tower extends GameEntity {
     public boolean isSelected;
     private TowerType currentType;
     private Timeline bulletTimeline = null;
-    public Circle fireRange = null;
+    private Circle fireRange = null;
+    private double prevAngle = 0;
     public TowerStats towerStats;
 
     public Tower(TowerType towerType) {
@@ -95,7 +97,7 @@ public class Tower extends GameEntity {
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 ShootRange = 80;
                 ShootSpeed = 0.5;
-                TowerDamage = 0.3;
+                TowerDamage = 0.05;
                 TowerValue = 100;
                 break;
             case IceTurret:
@@ -163,13 +165,20 @@ public class Tower extends GameEntity {
     }
 
     /*Xoay tháp theo hướng đi của địch*/
-    private void rotateTower() {
-        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), this);
-        rotateTransition.setFromAngle(90);
-        rotateTransition.setToAngle(250);
+    private void rotateTower(Enemy targetEnemy) {
+
+        Point2D a = new Point2D(targetEnemy.getXPos(), targetEnemy.getYPos());
+        Point2D b = new Point2D(this.getLayoutX(), this.getLayoutY());
+        double angle = calculateAngle(a,b);
+
+        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(0.5), this);
+        rotateTransition.setFromAngle(prevAngle);
+        rotateTransition.setToAngle(angle);
         rotateTransition.setCycleCount(1);
         rotateTransition.setAutoReverse(true);
         rotateTransition.play();
+
+        prevAngle = angle;
     }
 
     /*Kiểm tra va chạm với đường đi*/
@@ -226,22 +235,29 @@ public class Tower extends GameEntity {
                         if (EnemySpawner.enemies.get(i) != null && fireRange != null) {
                             if (EnemySpawner.enemies.get(i).getBound().intersects(fireRange.getBoundsInParent())) {
                                 targetEnemy = EnemySpawner.enemies.get(i);
+                                /*Nếu quân địch là máy bay và tháp không phải loại AirTower hoặc RayTower thì không được bắn*/
                                 if (targetEnemy.currentType == EnemyType.SmallerEnemy && (this.currentType != TowerType.AirTower && this.currentType != TowerType.RayTower))
-                                    return;
-                                if (targetEnemy.currentType != EnemyType.SmallerEnemy && this.currentType == TowerType.AirTower)
-                                    return;
+                                    targetEnemy = null;
+                                /*Nếu tháp hiện tại là AirTower mà quân địch không phải máy bay thì không được bắn*/
+                                else if (targetEnemy.currentType != EnemyType.SmallerEnemy && this.currentType == TowerType.AirTower)
+                                    targetEnemy = null;
+                                /*RayTower có thể bắn nhiều quân địch cùng một lúc*/
+                                else if (this.currentType == TowerType.RayTower) {
+                                    generateBulletPath(EnemySpawner.enemies.get(i));
+                                    rotateTower(targetEnemy);
+                                }
                                 else
                                     break;
                             }
                         }
                     }
-                }
 
-                if (targetEnemy != null) {
-                    /*Bắn đạn theo hướng quân địch*/
-                    generateBulletPath(targetEnemy);
-                    /*Xoay tháp theo hướng quân địch*/
-                    rotateTower();
+                    if (targetEnemy != null) {
+                        /*Bắn đạn theo hướng quân địch*/
+                        generateBulletPath(targetEnemy);
+                        /*Xoay tháp theo hướng quân địch*/
+                        rotateTower(targetEnemy);
+                    }
                 }
             }
         }));
@@ -315,6 +331,11 @@ public class Tower extends GameEntity {
         this.setLayoutY(yPos);
     }
 
+    private double calculateAngle(Point2D a, Point2D b) {
+        double result = 180 - Math.toDegrees(Math.atan2(a.getX() - b.getX(), a.getY() - b.getY()));
+        return result;
+    }
+
     public void upgradeTower() {
 
         if(TowerLevel < 5 && PlayerStats.money >= TowerUpgradeCost) {
@@ -332,7 +353,7 @@ public class Tower extends GameEntity {
                     TowerDamage += 0.3;
                     break;
                 case RayTower:
-                    TowerDamage += 0.2;
+                    TowerDamage += 0.1;
                     break;
                 case IceTurret:
                     TowerDamage += 0.02;
