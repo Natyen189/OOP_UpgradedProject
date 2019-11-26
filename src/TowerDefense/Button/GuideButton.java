@@ -46,7 +46,7 @@ public class GuideButton extends GameButton {
         guideImage.setPreserveRatio(true);
         guideImage.setVisible(false);
         guideImage.setViewOrder(-2);
-        GameStage.mainWindow.getChildren().add(guideImage);
+        GameStage.mainWindowPane.getChildren().add(guideImage);
 
         goIn = new TranslateTransition();
         goIn.setNode(guideImage);

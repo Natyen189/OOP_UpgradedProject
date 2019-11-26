@@ -14,7 +14,6 @@ import javafx.animation.*;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,7 +23,6 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.security.Key;
 
 public class Tower extends GameEntity {
     private int TowerValue;
@@ -104,11 +102,14 @@ public class Tower extends GameEntity {
                 imageLocation = new File("Asset\\TowerTile\\6.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
                 ShootRange = 80;
-                ShootSpeed = 0.5;
+                ShootSpeed = 0.8;
                 TowerDamage = 0.01;
                 TowerValue = 100;
                 break;
         }
+
+        image.setFitWidth(50);
+        image.setPreserveRatio(true);
     }
 
     /*Thêm hiệu ứng khi di chuột vào trong khung ảnh và hiển thị thông số của tháp*/
@@ -175,7 +176,7 @@ public class Tower extends GameEntity {
         rotateTransition.setFromAngle(prevAngle);
         rotateTransition.setToAngle(angle);
         rotateTransition.setCycleCount(1);
-        rotateTransition.setAutoReverse(true);
+        rotateTransition.setAutoReverse(false);
         rotateTransition.play();
 
         prevAngle = angle;
@@ -267,12 +268,12 @@ public class Tower extends GameEntity {
 
     /*Tạo tầm bắn cho tháp*/
     private void generateFireRange() {
-        fireRange = new Circle(this.getLayoutX() + (float)Config.TILE_SIZE/2, this.getLayoutY() + (float)Config.TILE_SIZE/2, ShootRange);
+        fireRange = new Circle(this.getLayoutX() + this.getWidth()/2, this.getLayoutY() + this.getHeight()/2, ShootRange);
         fireRange.setFill(Color.TRANSPARENT);
         fireRange.setStroke(Color.BLUEVIOLET);
         fireRange.setVisible(true);
         fireRange.setViewOrder(0);
-        GameStage.mainWindow.getChildren().add(fireRange);
+        GameStage.mainWindowPane.getChildren().add(fireRange);
     }
 
     /*Tạo đường bắn cho đạn*/
@@ -280,7 +281,7 @@ public class Tower extends GameEntity {
 
         Bullet bullet = new Bullet(this.currentType);
         Line line = new Line();
-        GameStage.mainWindow.getChildren().add(bullet);
+        GameStage.mainWindowPane.getChildren().add(bullet);
 
         line.setStartX(this.getLayoutX() + this.getWidth()/ 2);
         line.setStartY(this.getLayoutY() + this.getHeight()/ 2);
@@ -327,8 +328,8 @@ public class Tower extends GameEntity {
             }
         }
 
-        this.setLayoutX(xPos);
-        this.setLayoutY(yPos);
+        this.setLayoutX(xPos + 13/2);
+        this.setLayoutY(yPos + 13/2);
     }
 
     private double calculateAngle(Point2D a, Point2D b) {
@@ -377,8 +378,8 @@ public class Tower extends GameEntity {
     }
 
     public void onDestroy() {
-        GameStage.mainWindow.getChildren().remove(fireRange);
-        GameStage.mainWindow.getChildren().remove(this);
+        GameStage.mainWindowPane.getChildren().remove(fireRange);
+        GameStage.mainWindowPane.getChildren().remove(this);
         fireRange = null;
         this.getChildren().remove(image);
         image = null;
@@ -389,8 +390,8 @@ public class Tower extends GameEntity {
     }
 
     public void OnDestroyRestart() {
-        GameStage.mainWindow.getChildren().remove(fireRange);
-        GameStage.mainWindow.getChildren().remove(this);
+        GameStage.mainWindowPane.getChildren().remove(fireRange);
+        GameStage.mainWindowPane.getChildren().remove(this);
         fireRange = null;
         this.getChildren().remove(image);
         image = null;

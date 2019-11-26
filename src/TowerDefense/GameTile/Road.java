@@ -88,7 +88,7 @@ public class Road extends VBox {
 
         for(int i = 0; i < roadPath.length; i++) {
             roadPath[i].setVisible(false);
-            GameStage.mainWindow.getChildren().add(roadPath[i]);
+            GameStage.mainWindowPane.getChildren().add(roadPath[i]);
         }
     }
 

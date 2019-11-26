@@ -53,7 +53,7 @@ public class FreezeSpecial extends PlayerSpecial {
 
                 Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(7), displayEvent -> {
                     actionText.setVisible(false);
-                    GameStage.mainWindow.getChildren().remove(actionText);
+                    GameStage.mainWindowPane.getChildren().remove(actionText);
                     actionText = null;
                 }));
                 displayTimeline.setOnFinished(displayEvent -> {
@@ -81,7 +81,7 @@ public class FreezeSpecial extends PlayerSpecial {
         actionText.setScaleY(4);
         actionText.setLayoutX(Config.TILE_SIZE*9);
         actionText.setLayoutY(Config.TILE_SIZE*5);
-        GameStage.mainWindow.getChildren().add(actionText);
+        GameStage.mainWindowPane.getChildren().add(actionText);
 
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), actionText);
         fadeTransition.setFromValue(1.0);
@@ -101,6 +101,6 @@ public class FreezeSpecial extends PlayerSpecial {
         specialDescription.setVisible(false);
         specialDescription.setOpacity(0.8);
         specialDescription.setViewOrder(-3);
-        GameStage.mainWindow.getChildren().add(specialDescription);
+        GameStage.mainWindowPane.getChildren().add(specialDescription);
     }
 }

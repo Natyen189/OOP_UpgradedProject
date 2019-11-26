@@ -51,7 +51,7 @@ public class HotPotSpecial extends PlayerSpecial {
         actionText.setScaleY(4);
         actionText.setLayoutX(Config.TILE_SIZE*8);
         actionText.setLayoutY(Config.TILE_SIZE*5);
-        GameStage.mainWindow.getChildren().add(actionText);
+        GameStage.mainWindowPane.getChildren().add(actionText);
 
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), actionText);
         fadeTransition.setFromValue(1.0);
@@ -72,7 +72,7 @@ public class HotPotSpecial extends PlayerSpecial {
         specialDescription.setVisible(false);
         specialDescription.setOpacity(0.8);
         specialDescription.setViewOrder(-3);
-        GameStage.mainWindow.getChildren().add(specialDescription);
+        GameStage.mainWindowPane.getChildren().add(specialDescription);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class HotPotSpecial extends PlayerSpecial {
 
                 Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(5), displayEvent -> {
                     actionText.setVisible(false);
-                    GameStage.mainWindow.getChildren().remove(actionText);
+                    GameStage.mainWindowPane.getChildren().remove(actionText);
                     actionText = null;
                 }));
                 displayTimeline.setOnFinished(displayEvent -> {
@@ -135,13 +135,13 @@ public class HotPotSpecial extends PlayerSpecial {
         test.setLayoutX(Config.TILE_SIZE*3);
         test.setLayoutY(-Config.TILE_SIZE*2);
         test.setLayoutY(0);
-        GameStage.mainWindow.getChildren().add(test);
+        GameStage.mainWindowPane.getChildren().add(test);
 
         Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(0.07), event -> test.setImage(explode[frame++])));
         displayTimeline.setCycleCount(explode.length);
         displayTimeline.setAutoReverse(false);
         displayTimeline.setOnFinished(event-> {
-            GameStage.mainWindow.getChildren().remove(test);
+            GameStage.mainWindowPane.getChildren().remove(test);
             frame = 0;
         });
         displayTimeline.play();

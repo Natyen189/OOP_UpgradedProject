@@ -63,26 +63,17 @@ public class TowerButton extends GameEntity {
 
     void setMouse() {
 
-        setOnMouseEntered(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                for(int i = 0; i < towerList.size(); i++) {
-                    towerList.get(i).isSelected = false;
-                    TowerButton.towerList.get(i).towerStats.toggleStat(false);
-                }
-                setEffect(new Glow());
-                towerStats.toggleStat(true);
+        setOnMouseEntered(mouseEvent -> {
+            for(int i = 0; i < towerList.size(); i++) {
+                TowerButton.towerList.get(i).towerStats.toggleStat(false);
             }
+            setEffect(new Glow());
+            towerStats.toggleStat(true);
         });
 
-        setOnMouseExited(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                setEffect(null);
-                towerStats.toggleStat(false);
-            }
+        setOnMouseExited(mouseEvent -> {
+            setEffect(null);
+            towerStats.toggleStat(false);
         });
     }
 
@@ -97,7 +88,7 @@ public class TowerButton extends GameEntity {
                     temp.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
                     temp.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
                     towerList.add(temp);
-                    GameStage.mainWindow.getChildren().add(temp);
+                    GameStage.mainWindowPane.getChildren().add(temp);
                     System.out.println(towerType + " spawned.");
                 }
             }

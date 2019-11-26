@@ -1,23 +1,14 @@
 package TowerDefense.GameEntity.Player;
 
 import TowerDefense.Button.TowerButton;
-import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameStage;
-import TowerDefense.GameTile.Tower.Tower;
-import TowerDefense.GameTile.Tower.TowerStats;
-import TowerDefense.Main;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -27,7 +18,7 @@ import java.util.ArrayList;
 public class PlayerStats {
 
     public static int health = 20;
-    public static int money = 12000;
+    public static int money = 1000;
     public static boolean restart = false;
     Text level;
     Text lives;
@@ -65,9 +56,9 @@ public class PlayerStats {
         playerMoney.setStroke(Color.BLACK);
         playerMoney.setStrokeWidth(3);
 
-        GameStage.mainWindow.getChildren().add(level);
-        GameStage.mainWindow.getChildren().add(lives);
-        GameStage.mainWindow.getChildren().add(playerMoney);
+        GameStage.mainWindowPane.getChildren().add(level);
+        GameStage.mainWindowPane.getChildren().add(lives);
+        GameStage.mainWindowPane.getChildren().add(playerMoney);
     }
 
     public static void subtractHealth() {
@@ -121,7 +112,7 @@ public class PlayerStats {
             }
 
             for (int i = 0; i < EnemySpawner.enemies.size(); i++) {
-                GameStage.mainWindow.getChildren().remove(EnemySpawner.enemies.get(i));
+                GameStage.mainWindowPane.getChildren().remove(EnemySpawner.enemies.get(i));
                 EnemySpawner.enemies.get(i).OnDestroyRestart();
             }
         }
@@ -140,7 +131,7 @@ public class PlayerStats {
 
     public static void resetDefaultValue() {
         health = 20;
-        money = 12000;
+        money = 4000;
         EnemySpawner.level = 0;
         restart = false;
         EnemySpawner.enemies = new ArrayList<>();

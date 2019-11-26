@@ -186,7 +186,9 @@ public class Enemy extends GameEntity {
 
     public void autoDestroy() {
         Timeline destroyTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
-            if(outOfHealth()) onDestroy();
+            if(outOfHealth()) {
+                onDestroy();
+            }
         }));
         destroyTimeline.setCycleCount(Animation.INDEFINITE);
         destroyTimeline.setAutoReverse(false);
@@ -245,6 +247,27 @@ public class Enemy extends GameEntity {
         }
     }
 
+    public void increaseStatByLevel(int level) {
+        switch (currentType) {
+            case NormalEnemy:
+                armor += level;
+                value += 2;
+                break;
+            case TankerEnemy:
+                armor += level*1.2;
+                value += 3;
+                break;
+            case SmallerEnemy:
+                armor += level*0.6;
+                value += 3;
+                break;
+            case BossEnemy:
+                armor += level*30;
+                value += 10;
+                break;
+        }
+    }
+
     public double getXPos() {
         return image.getTranslateX();
     }
@@ -271,10 +294,6 @@ public class Enemy extends GameEntity {
 
     public double getArmor() {
         return armor;
-    }
-
-    public void increaseHealthByLevel(int level) {
-        armor += level;
     }
 
 }

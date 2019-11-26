@@ -4,7 +4,6 @@ import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameStage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -134,9 +133,9 @@ public class EnemySpawner extends Pane {
         timeline  = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if(enemies != null) {
                 Enemy tempEnemy = new Enemy(enemyType);
-                tempEnemy.increaseHealthByLevel(level);
+                tempEnemy.increaseStatByLevel(level);
                 enemies.add(tempEnemy);
-                GameStage.mainWindow.getChildren().add(enemies.get(enemies.size()-1));
+                GameStage.mainWindowPane.getChildren().add(enemies.get(enemies.size()-1));
             }
         }));
         timeline.setCycleCount(numberOfEnemySpawned);

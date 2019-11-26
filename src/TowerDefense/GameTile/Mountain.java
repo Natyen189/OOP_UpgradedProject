@@ -2,9 +2,6 @@ package TowerDefense.GameTile;
 
 import TowerDefense.Config;
 import TowerDefense.GameStage;
-import TowerDefense.GameTile.Tower.Tower;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -89,7 +86,7 @@ public class Mountain extends VBox {
             for(int j = 0; j < Config.TILE_HORIZONTAL; j++) {
                 if(mapTile[i][j] != null) {
                     mapTile[i][j].setVisible(false);
-                    GameStage.mainWindow.getChildren().add(mapTile[i][j]);
+                    GameStage.mainWindowPane.getChildren().add(mapTile[i][j]);
                 }
             }
         }

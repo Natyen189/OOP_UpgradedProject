@@ -5,7 +5,6 @@ import TowerDefense.Config;
 import TowerDefense.GameStage;
 import TowerDefense.GameTile.Tower.Tower;
 import javafx.animation.PathTransition;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -36,7 +35,7 @@ public class EnemySpecial extends Pane {
             imageView[i].setFitHeight(Config.TILE_SIZE);
             imageView[i].setPreserveRatio(true);
             imageView[i].setViewOrder(-2);
-            GameStage.mainWindow.getChildren().add(imageView[i]);
+            GameStage.mainWindowPane.getChildren().add(imageView[i]);
         }
     }
 
@@ -82,7 +81,7 @@ public class EnemySpecial extends Pane {
     }
 
     private void OnDestroy(ImageView imageView) {
-        GameStage.mainWindow.getChildren().remove(imageView);
+        GameStage.mainWindowPane.getChildren().remove(imageView);
     }
 
     private void destroyTower(Tower target) {

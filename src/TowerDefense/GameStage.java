@@ -3,7 +3,6 @@ package TowerDefense;
 import TowerDefense.Button.*;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
-import TowerDefense.GameEntity.Player.HighScore;
 import TowerDefense.GameEntity.Player.PlayerSpecial.FreezeSpecial;
 import TowerDefense.GameEntity.Player.PlayerSpecial.HotPotSpecial;
 import TowerDefense.GameEntity.Player.PlayerStats;
@@ -19,21 +18,20 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 
 public class GameStage {
 
-    public static Pane mainWindow;
+    public static Pane mainWindowPane;
     public static Pane gameOverPane;
     public static Scene mainScene;
     public static Scene gameOverScene;
     public static Stage gameStage;
 
     public GameStage() {
-        mainWindow = new Pane();
+        mainWindowPane = new Pane();
         gameOverPane = new Pane();
         gameStage = new Stage();
-        mainScene = new Scene(mainWindow, gameStage.getMaxWidth(), gameStage.getMaxHeight());
+        mainScene = new Scene(mainWindowPane, gameStage.getMaxWidth(), gameStage.getMaxHeight());
         gameOverScene = new Scene(gameOverPane, gameStage.getMaxWidth(), gameStage.getMaxHeight());
         gameStage.setScene(mainScene);
         createGameOverScene();
@@ -79,7 +77,7 @@ public class GameStage {
         ImageView background = new ImageView(backGroundLocation.toURI().toString());
         background.setFitHeight(800);
         background.setPreserveRatio(true);
-        mainWindow.getChildren().add(background);
+        mainWindowPane.getChildren().add(background);
 
     }
 
@@ -97,7 +95,7 @@ public class GameStage {
         MenuButton startButton = new MenuButton("", buttonImage, MenuButton.ButtonName.PlayButton);
         startButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 195);
         startButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 - 100);
-        mainWindow.getChildren().add(startButton);
+        mainWindowPane.getChildren().add(startButton);
 
         File guideButtonLocation = new File("Asset\\GuideButton.png");
         ImageView guideButtonImage = new ImageView(new Image(guideButtonLocation.toURI().toString()));
@@ -106,7 +104,7 @@ public class GameStage {
         GuideButton guideButton = new GuideButton("", guideButtonImage);
         guideButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 180);
         guideButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 - 30);
-        mainWindow.getChildren().add(guideButton);
+        mainWindowPane.getChildren().add(guideButton);
 
         File exitButtonLocation = new File("Asset\\ExitButton.png");
         ImageView exitButtonImage = new ImageView(new Image(exitButtonLocation.toURI().toString()));
@@ -115,7 +113,7 @@ public class GameStage {
         MenuButton exitButton = new MenuButton("", exitButtonImage, MenuButton.ButtonName.ExitButton);
         exitButton.setLayoutX((float)Config.SCREEN_WIDTH/2 - 165);
         exitButton.setLayoutY((float)Config.SCREEN_HEIGHT/2 + 40);
-        mainWindow.getChildren().add(exitButton);
+        mainWindowPane.getChildren().add(exitButton);
 
         startButton.setOnMouseReleased(event -> {
             guideButton.setDisable(true);
@@ -133,7 +131,7 @@ public class GameStage {
         UpgradeButton upgradeButton = new UpgradeButton("", buttonImage);
         upgradeButton.setLayoutX((float)Config.SCREEN_WIDTH - 280);
         upgradeButton.setLayoutY((float)Config.SCREEN_HEIGHT - 470);
-        mainWindow.getChildren().add(upgradeButton);
+        mainWindowPane.getChildren().add(upgradeButton);
     }
 
     private void createSellButton() {
@@ -142,7 +140,7 @@ public class GameStage {
         SellButton sellButton = new SellButton("", buttonImage);
         sellButton.setLayoutX((float)Config.SCREEN_WIDTH - 120);
         sellButton.setLayoutY((float)Config.SCREEN_HEIGHT - 470);
-        mainWindow.getChildren().add(sellButton);
+        mainWindowPane.getChildren().add(sellButton);
     }
 
     private void createTowerButton() {
@@ -175,22 +173,22 @@ public class GameStage {
         tower6.setLayoutX(startXPos + 260);
         tower6.setLayoutY(startYPos + 110);
 
-        mainWindow.getChildren().add(tower1);
-        mainWindow.getChildren().add(tower2);
-        mainWindow.getChildren().add(tower3);
-        mainWindow.getChildren().add(tower4);
-        mainWindow.getChildren().add(tower5);
-        mainWindow.getChildren().add(tower6);
+        mainWindowPane.getChildren().add(tower1);
+        mainWindowPane.getChildren().add(tower2);
+        mainWindowPane.getChildren().add(tower3);
+        mainWindowPane.getChildren().add(tower4);
+        mainWindowPane.getChildren().add(tower5);
+        mainWindowPane.getChildren().add(tower6);
     }
 
     public void createEnemy() {
 
         /*Gọi quân địch*/
         EnemySpawner enemySpawner = new EnemySpawner();
-        mainWindow.getChildren().add(enemySpawner);
+        mainWindowPane.getChildren().add(enemySpawner);
 
         /*Khoảng cách giữa 2 wave là 6 giây*/
-        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(10), event-> {
+        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(20), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
                 if(EnemySpawner.enemies != null) {
@@ -217,7 +215,7 @@ public class GameStage {
         HotPotSpecial special1 = new HotPotSpecial();
         FreezeSpecial special2 = new FreezeSpecial();
 
-        mainWindow.getChildren().add(special1);
-        mainWindow.getChildren().add(special2);
+        mainWindowPane.getChildren().add(special1);
+        mainWindowPane.getChildren().add(special2);
     }
 }

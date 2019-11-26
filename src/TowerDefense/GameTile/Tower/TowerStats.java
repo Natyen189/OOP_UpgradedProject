@@ -1,13 +1,9 @@
 package TowerDefense.GameTile.Tower;
 
 import TowerDefense.GameStage;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 public class TowerStats {
 
@@ -79,7 +75,7 @@ public class TowerStats {
         baseInformation[5].setFont(Font.loadFont("file:Asset\\Font\\UTM BanqueR.ttf", 13));
 
         for (Label baseInfo : baseInformation) {
-            GameStage.mainWindow.getChildren().add(baseInfo);
+            GameStage.mainWindowPane.getChildren().add(baseInfo);
         }
     }
 
@@ -151,7 +147,7 @@ public class TowerStats {
         towerStats[5].setFont(Font.loadFont("file:Asset\\Font\\UTM BanqueR.ttf", 13));
 
         for (Label towerStat : towerStats) {
-            GameStage.mainWindow.getChildren().add(towerStat);
+            GameStage.mainWindowPane.getChildren().add(towerStat);
         }
 
     }
@@ -186,11 +182,11 @@ public class TowerStats {
     public void onDestroy() {
 
         for (Label baseInfo : baseInformation) {
-            GameStage.mainWindow.getChildren().remove(baseInfo);
+            GameStage.mainWindowPane.getChildren().remove(baseInfo);
         }
 
         for (Label towerStat : towerStats) {
-            GameStage.mainWindow.getChildren().remove(towerStat);
+            GameStage.mainWindowPane.getChildren().remove(towerStat);
         }
     }
 }
