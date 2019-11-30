@@ -79,7 +79,7 @@ public class PlayerStats {
         updateTimeLine.play();
     }
 
-    private static void restartGame() {
+    public static void restartGame() {
         Timeline restartTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             if(health == 0 && !restart) {
                 try {
@@ -104,6 +104,7 @@ public class PlayerStats {
     }
 
     private static void cleanUp() {
+        if(EnemySpawner.timeline != null)
         EnemySpawner.timeline.stop();
 
         if(EnemySpawner.enemies != null) {

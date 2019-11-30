@@ -3,6 +3,7 @@ package TowerDefense.GameEntity.Enemy;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.GameEntity;
 import TowerDefense.GameEntity.Player.PlayerStats;
+import TowerDefense.GameStage;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
@@ -169,6 +170,7 @@ public class Enemy extends GameEntity {
     }
 
     public void onDestroy() {
+        GameStage.mainWindowPane.getChildren().remove(this);
         this.getChildren().remove(image);
         this.getChildren().remove(healthBar);
         image = null;

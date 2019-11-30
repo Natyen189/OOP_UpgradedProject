@@ -77,7 +77,7 @@ public class Tower extends GameEntity {
             case MachineGun:
                 imageLocation = new File("Asset\\TowerTile\\3.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
-                ShootRange = 80;
+                ShootRange = 90;
                 ShootSpeed = 0.2;
                 TowerDamage = 0.1;
                 TowerValue = 150;
@@ -93,7 +93,7 @@ public class Tower extends GameEntity {
             case RayTower:
                 imageLocation = new File("Asset\\TowerTile\\5.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
-                ShootRange = 80;
+                ShootRange = 90;
                 ShootSpeed = 0.5;
                 TowerDamage = 0.05;
                 TowerValue = 100;
@@ -101,7 +101,7 @@ public class Tower extends GameEntity {
             case IceTurret:
                 imageLocation = new File("Asset\\TowerTile\\6.png");
                 image = new ImageView(new Image(imageLocation.toURI().toString()));
-                ShootRange = 80;
+                ShootRange = 90;
                 ShootSpeed = 0.8;
                 TowerDamage = 0.01;
                 TowerValue = 100;
@@ -161,7 +161,6 @@ public class Tower extends GameEntity {
                     canSpawnBullet = false;
                 }
             }
-
         });
     }
 
@@ -213,7 +212,9 @@ public class Tower extends GameEntity {
         colorAdjust[1].setBrightness(0);
 
         for(int i = TowerButton.towerList.size() - 2; i >= 0; i--) {
-            if(this.getBoundsInParent().intersects(TowerButton.towerList.get(i).getTowerBound()) && draggable) {
+            if(this.getBoundsInParent().intersects(TowerButton.towerList.get(i).getTowerBound())
+                    && draggable && this != TowerButton.towerList.get(i)) {
+
                 System.out.println("This position is occupied.");
                 image.setEffect(colorAdjust[0]);
                 return true;
@@ -266,16 +267,6 @@ public class Tower extends GameEntity {
         bulletTimeline.play();
     }
 
-    /*Tạo tầm bắn cho tháp*/
-    private void generateFireRange() {
-        fireRange = new Circle(this.getLayoutX() + this.getWidth()/2, this.getLayoutY() + this.getHeight()/2, ShootRange);
-        fireRange.setFill(Color.TRANSPARENT);
-        fireRange.setStroke(Color.BLUEVIOLET);
-        fireRange.setVisible(true);
-        fireRange.setViewOrder(0);
-        GameStage.mainWindowPane.getChildren().add(fireRange);
-    }
-
     /*Tạo đường bắn cho đạn*/
     private void generateBulletPath(Enemy targetEnemy) {
 
@@ -293,7 +284,7 @@ public class Tower extends GameEntity {
         pathTransition.setPath(line);
         pathTransition.setCycleCount(1);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setDuration(Duration.seconds(0.5));
+        pathTransition.setDuration(Duration.seconds(ShootSpeed));
         pathTransition.setOnFinished(actionEvent -> {
             if(!targetEnemy.outOfHealth()) {
                 targetEnemy.subtractHealth(TowerDamage);
@@ -307,6 +298,16 @@ public class Tower extends GameEntity {
             bullet.onDestroy();
         });
         pathTransition.play();
+    }
+
+    /*Tạo tầm bắn cho tháp*/
+    private void generateFireRange() {
+        fireRange = new Circle(this.getLayoutX() + this.getWidth()/2, this.getLayoutY() + this.getHeight()/2, ShootRange);
+        fireRange.setFill(Color.BLUEVIOLET);
+        fireRange.setOpacity(0.3);
+        fireRange.setVisible(true);
+        fireRange.setViewOrder(0);
+        GameStage.mainWindowPane.getChildren().add(fireRange);
     }
 
     private void snapTowerToGrid() {
@@ -328,17 +329,15 @@ public class Tower extends GameEntity {
             }
         }
 
-        this.setLayoutX(xPos + 13/2);
-        this.setLayoutY(yPos + 13/2);
+        this.setLayoutX(xPos + (Config.TILE_SIZE - this.getWidth())/2);
+        this.setLayoutY(yPos + (Config.TILE_SIZE - this.getHeight())/2);
     }
 
     private double calculateAngle(Point2D a, Point2D b) {
-        double result = 180 - Math.toDegrees(Math.atan2(a.getX() - b.getX(), a.getY() - b.getY()));
-        return result;
+        return 180 - Math.toDegrees(Math.atan2(a.getX() - b.getX(), a.getY() - b.getY()));
     }
 
     public void upgradeTower() {
-
         if(TowerLevel < 5 && PlayerStats.money >= TowerUpgradeCost) {
             switch (currentType) {
                 case NormalTower:

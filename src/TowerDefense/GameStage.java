@@ -3,6 +3,7 @@ package TowerDefense;
 import TowerDefense.Button.*;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameEntity.Player.PlayerCheat;
 import TowerDefense.GameEntity.Player.PlayerSpecial.FreezeSpecial;
 import TowerDefense.GameEntity.Player.PlayerSpecial.HotPotSpecial;
 import TowerDefense.GameEntity.Player.PlayerStats;
@@ -13,6 +14,7 @@ import javafx.animation.*;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -41,6 +43,7 @@ public class GameStage {
         createEnemy();
         createPlayerStat();
         createPlayerSpecial();
+        createCheatSheet();
     }
 
     public Stage getState() {
@@ -217,5 +220,24 @@ public class GameStage {
 
         mainWindowPane.getChildren().add(special1);
         mainWindowPane.getChildren().add(special2);
+    }
+
+    private void createCheatSheet() {
+        PlayerCheat playerCheat = new PlayerCheat();
+        playerCheat.setViewOrder(-2);
+        mainWindowPane.getChildren().add(playerCheat);
+
+        mainScene.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.CONTROL) {
+                if(!playerCheat.toggle) {
+                    playerCheat.toggleVisibility(true);
+                    playerCheat.toggle = true;
+                }
+                else {
+                    playerCheat.toggleVisibility(false);
+                    playerCheat.toggle = false;
+                }
+            }
+        });
     }
 }

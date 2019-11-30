@@ -1,6 +1,7 @@
 package TowerDefense.GameTile.Tower;
 
 import TowerDefense.GameEntity.GameEntity;
+import TowerDefense.GameStage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -43,6 +44,7 @@ public class Bullet extends GameEntity {
     }
 
     public void onDestroy() {
+        GameStage.mainWindowPane.getChildren().remove(this);
         this.getChildren().remove(image);
         image = null;
     }

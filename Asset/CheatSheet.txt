@@ -1,0 +1,7 @@
+It's recommended to defeat the game first but feel free to use these cheatcodes:
+1. show me the money: Increase player money to 20000.
+2. i dont do level: Skip 5 levels.
+3. there is no cow level: Lost the game right away.
+4. power overwhelming: Increase player health to 100.
+5. hey im bored: see it for yourself :)
+ 

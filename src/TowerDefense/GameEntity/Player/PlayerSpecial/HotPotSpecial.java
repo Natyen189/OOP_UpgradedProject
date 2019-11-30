@@ -94,7 +94,6 @@ public class HotPotSpecial extends PlayerSpecial {
                         EnemySpawner.enemies.get(i).subtractHealth(0.5*(EnemySpawner.enemies.get(i).getArmor()));
                         countdownBar.setProgress(0);
                     }
-                    canCastSpecial = true;
                     displayExplosion();
                     resetSpecial();
                 });
