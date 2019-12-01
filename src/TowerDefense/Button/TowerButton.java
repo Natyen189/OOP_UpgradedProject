@@ -82,8 +82,10 @@ public class TowerButton extends GameEntity {
             if(MenuButton.startGame) {
                 towerStats.toggleStat(false);
                 Tower temp = new Tower(towerType);
+                temp.draggable = false;
                 if(PlayerStats.money >= temp.getTowerValue()) {
                     PlayerStats.money -= temp.getTowerValue();
+                    temp.draggable = true;
                     temp.setViewOrder(-1);
                     temp.setLayoutX(event.getSceneX() - (float) Config.TILE_SIZE/2);
                     temp.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);

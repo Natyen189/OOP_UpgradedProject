@@ -14,7 +14,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/*Class sẽ để hiển thị những thông số cơ bản của nguoiwf chơi như: mạng, tiền, ...*/
+/*Class sẽ để hiển thị những thông số cơ bản của người chơi như: mạng, tiền, ...*/
 public class PlayerStats {
 
     public static int health = 20;
@@ -88,7 +88,7 @@ public class PlayerStats {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                GameStage.gameStage.setScene(GameStage.gameOverScene);
+                switchToGameOverScene();
                 restart = true;
                 cleanUp();
             }
@@ -101,6 +101,30 @@ public class PlayerStats {
     private static void updateHighScore() throws IOException {
         HighScore test = new HighScore();
         GameStage.gameOverPane.getChildren().add(test);
+    }
+
+    private static void switchToGameOverScene() {
+        GameStage.gameStage.setScene(GameStage.gameOverScene);
+        GameStage.gameStage.setMaximized(false);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01)));
+        timeline.setOnFinished(actionEvent -> {
+            GameStage.gameStage.setMaximized(true);
+        });
+        timeline.setCycleCount(1);
+        timeline.setAutoReverse(false);
+        timeline.play();
+    }
+
+    private static void switchToMainScene() {
+        GameStage.gameStage.setScene(GameStage.mainScene);
+        GameStage.gameStage.setMaximized(false);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01)));
+        timeline.setOnFinished(actionEvent -> {
+            GameStage.gameStage.setMaximized(true);
+        });
+        timeline.setCycleCount(1);
+        timeline.setAutoReverse(false);
+        timeline.play();
     }
 
     private static void cleanUp() {
@@ -132,12 +156,12 @@ public class PlayerStats {
 
     public static void resetDefaultValue() {
         health = 20;
-        money = 4000;
+        money = 1000;
         EnemySpawner.level = 0;
         restart = false;
         EnemySpawner.enemies = new ArrayList<>();
         TowerButton.towerList = new ArrayList<>();
-        GameStage.gameStage.setScene(GameStage.mainScene);
+        switchToMainScene();
     }
 
 }

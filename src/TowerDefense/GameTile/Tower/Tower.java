@@ -1,5 +1,6 @@
 package TowerDefense.GameTile.Tower;
 
+import TowerDefense.Button.MenuButton;
 import TowerDefense.Button.TowerButton;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.Enemy;
@@ -32,8 +33,8 @@ public class Tower extends GameEntity {
     private double TowerDamage;
     private double ShootRange;
     private double ShootSpeed;
-    private boolean draggable;
     private boolean canSpawnBullet;
+    public boolean draggable;
     public boolean isSelected;
     private TowerType currentType;
     private Timeline bulletTimeline = null;
@@ -140,8 +141,8 @@ public class Tower extends GameEntity {
     /*Quản lý thao tác kéo thả tháp*/
     private void DragTower() {
 
-        setOnMouseDragged(event -> {
-            if(draggable) {
+        GameStage.mainWindowPane.setOnMouseMoved(event -> {
+            if(draggable && MenuButton.startGame) {
                 this.setLayoutX(event.getSceneX() - (float)Config.TILE_SIZE/2);
                 this.setLayoutY(event.getSceneY() - (float)Config.TILE_SIZE/2);
                 Mountain.toggleVisibility(true);
@@ -153,9 +154,9 @@ public class Tower extends GameEntity {
             if((this.getLayoutX() <= Config.SCREEN_WIDTH - Config.MENU_WIDTH
                     && this.getLayoutY() <= Config.SCREEN_HEIGHT - Config.MENU_HEIGHT) && !collideWithRoad() && !collideWithSelf()) {
                 draggable = false;
-                snapTowerToGrid();
                 Mountain.toggleVisibility(false);
                 if(canSpawnBullet) {
+                    snapTowerToGrid();
                     generateFireRange();
                     spawnBullet();
                     canSpawnBullet = false;
@@ -338,7 +339,7 @@ public class Tower extends GameEntity {
     }
 
     public void upgradeTower() {
-        if(TowerLevel < 5 && PlayerStats.money >= TowerUpgradeCost) {
+        if(TowerLevel < 5 && (PlayerStats.money - TowerUpgradeCost >= 0)) {
             switch (currentType) {
                 case NormalTower:
                     TowerDamage += 0.3;
@@ -353,7 +354,7 @@ public class Tower extends GameEntity {
                     TowerDamage += 0.3;
                     break;
                 case RayTower:
-                    TowerDamage += 0.1;
+                    TowerDamage += 0.06;
                     break;
                 case IceTurret:
                     TowerDamage += 0.02;
@@ -426,10 +427,6 @@ public class Tower extends GameEntity {
 
     public double getShootRange() {
         return ShootRange;
-    }
-
-    public Circle getFireRange() {
-        return fireRange;
     }
 
     public Bounds getTowerBound() {
