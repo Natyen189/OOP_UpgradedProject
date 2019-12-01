@@ -429,6 +429,7 @@ public class Tower extends GameEntity {
         return ShootRange;
     }
 
+
     public Bounds getTowerBound() {
         return this.getBoundsInParent();
     }
