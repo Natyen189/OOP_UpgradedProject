@@ -11,6 +11,7 @@ import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameStage;
 import TowerDefense.GameTile.Mountain;
 import TowerDefense.GameTile.Road;
+import TowerDefense.MusicContainer;
 import javafx.animation.*;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -18,6 +19,8 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -41,9 +44,11 @@ public class Tower extends GameEntity {
     private Circle fireRange = null;
     private double prevAngle = 0;
     public TowerStats towerStats;
+    private MediaPlayer firingSound;
 
     public Tower(TowerType towerType) {
         loadImage(towerType);
+        loadSound(towerType);
         displayTowerStats();
         DragTower();
         draggable = true;
@@ -113,6 +118,31 @@ public class Tower extends GameEntity {
         image.setPreserveRatio(true);
     }
 
+    private void loadSound(TowerType type) {
+        File firingLocation = null;
+        switch (type) {
+            case NormalTower:
+                firingLocation = new File("Asset\\Music\\Firing.mp3");
+                break;
+            case SniperTower:
+                firingLocation = new File("Asset\\Music\\Firing_Sniper.mp3");
+                break;
+            case MachineGun:
+                firingLocation = new File("Asset\\Music\\Firing_MG.mp3");
+                break;
+            case AirTower:
+                firingLocation = new File("Asset\\Music\\Firing_Air.mp3");
+                break;
+            case RayTower:
+                firingLocation = new File("Asset\\Music\\Firing.mp3");
+                break;
+            case IceTurret:
+                firingLocation = new File("Asset\\Music\\Firing.mp3");
+                break;
+        }
+         firingSound = new MediaPlayer(new Media(firingLocation.toURI().toString()));
+    }
+
     /*Thêm hiệu ứng khi di chuột vào trong khung ảnh và hiển thị thông số của tháp*/
     private void displayTowerStats() {
 
@@ -140,7 +170,6 @@ public class Tower extends GameEntity {
 
     /*Quản lý thao tác kéo thả tháp*/
     private void DragTower() {
-
         GameStage.mainWindowPane.setOnMouseMoved(event -> {
             if(draggable && MenuButton.startGame) {
                 this.setLayoutX(event.getSceneX() - (float)Config.TILE_SIZE/2);
@@ -156,6 +185,8 @@ public class Tower extends GameEntity {
                 draggable = false;
                 Mountain.toggleVisibility(false);
                 if(canSpawnBullet) {
+                    MusicContainer.playTowerSound.stop();
+                    MusicContainer.playTowerSound.play();
                     snapTowerToGrid();
                     generateFireRange();
                     spawnBullet();
@@ -258,6 +289,8 @@ public class Tower extends GameEntity {
                     if (targetEnemy != null) {
                         /*Bắn đạn theo hướng quân địch*/
                         generateBulletPath(targetEnemy);
+                        /*Xử lý âm thanh*/
+                        playSound();
                         /*Xoay tháp theo hướng quân địch*/
                         rotateTower(targetEnemy);
                     }
@@ -285,7 +318,7 @@ public class Tower extends GameEntity {
         pathTransition.setPath(line);
         pathTransition.setCycleCount(1);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setDuration(Duration.seconds(ShootSpeed));
+        pathTransition.setDuration(Duration.seconds(0.3));
         pathTransition.setOnFinished(actionEvent -> {
             if(!targetEnemy.outOfHealth()) {
                 targetEnemy.subtractHealth(TowerDamage);
@@ -301,11 +334,43 @@ public class Tower extends GameEntity {
         pathTransition.play();
     }
 
+    private void playSound() {
+        double playTime = 0;
+        switch (currentType) {
+            case NormalTower:
+                playTime = 0.3;
+                break;
+            case SniperTower:
+                playTime = 0.6;
+                break;
+            case MachineGun:
+                playTime = 0.1;
+                break;
+            case AirTower:
+                playTime = 0.25;
+                break;
+            case RayTower:
+                playTime = 0.3;
+                break;
+            case IceTurret:
+                playTime = 0.3;
+                break;
+        }
+        firingSound.play();
+        Timeline playTimeline = new Timeline(new KeyFrame(Duration.seconds(playTime), event -> {
+            firingSound.stop();
+        }));
+        playTimeline.setCycleCount(1);
+        playTimeline.setAutoReverse(false);
+        playTimeline.play();
+    }
+
     /*Tạo tầm bắn cho tháp*/
     private void generateFireRange() {
         fireRange = new Circle(this.getLayoutX() + this.getWidth()/2, this.getLayoutY() + this.getHeight()/2, ShootRange);
-        fireRange.setFill(Color.BLUEVIOLET);
-        fireRange.setOpacity(0.3);
+        fireRange.setFill(Color.DEEPSKYBLUE);
+        fireRange.setStroke(Color.BLUEVIOLET);
+        fireRange.setOpacity(0.4);
         fireRange.setVisible(true);
         fireRange.setViewOrder(0);
         GameStage.mainWindowPane.getChildren().add(fireRange);
@@ -339,7 +404,7 @@ public class Tower extends GameEntity {
     }
 
     public void upgradeTower() {
-        if(TowerLevel < 5 && (PlayerStats.money - TowerUpgradeCost >= 0)) {
+        if((PlayerStats.money - TowerUpgradeCost >= 0) && (TowerLevel < 5)) {
             switch (currentType) {
                 case NormalTower:
                     TowerDamage += 0.3;

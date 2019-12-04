@@ -19,8 +19,8 @@ import java.io.File;
 
 public class Enemy extends GameEntity {
 
-    public static double speed;
-    public double health = 1;
+    private static double speed;
+    private double health = 1;
     private double armor;
     private int value;
     public EnemyType currentType;
@@ -31,7 +31,6 @@ public class Enemy extends GameEntity {
         currentType = type;
         generateHealthBar();
         loadImage(type);
-        this.getChildren().add(image);
         handleAnimation(type);
         autoDestroy();
     }
@@ -87,6 +86,7 @@ public class Enemy extends GameEntity {
                 value = 200;
                 break;
         }
+        this.getChildren().add(image);
     }
 
     public void handleAnimation(EnemyType enemyType) {
@@ -180,8 +180,7 @@ public class Enemy extends GameEntity {
     }
 
     public void OnDestroyRestart() {
-        this.getChildren().remove(image);
-        this.getChildren().remove(healthBar);
+        GameStage.mainWindowPane.getChildren().remove(this);
         image = null;
         healthBar = null;
     }
@@ -201,7 +200,6 @@ public class Enemy extends GameEntity {
     private void generateHealthBar() {
         healthBar = new ProgressBar(this.health);
         healthBar.setPrefSize(Config.TILE_SIZE - 10, (float)Config.TILE_SIZE/6);
-        healthBar.setStyle("-fx-accent: red;");
         healthBar.setViewOrder(-1);
         this.getChildren().add(healthBar);
 
@@ -210,15 +208,19 @@ public class Enemy extends GameEntity {
                 switch (this.currentType) {
                     case NormalEnemy:
                         healthBar.setTranslateX(image.getTranslateX() - 15);
+                        healthBar.setStyle("-fx-accent: green;");
                         break;
                     case TankerEnemy:
                         healthBar.setTranslateX(image.getTranslateX());
+                        healthBar.setStyle("-fx-accent: orange;");
                         break;
                     case SmallerEnemy:
                         healthBar.setTranslateX(image.getTranslateX() + 10);
+                        healthBar.setStyle("-fx-accent: yellowGreen;");
                         break;
                     case BossEnemy:
                         healthBar.setTranslateX(image.getTranslateX() + 50);
+                        healthBar.setStyle("-fx-accent: red;");
                         break;
                 }
                 healthBar.setTranslateY(image.getTranslateY() - 15);
@@ -264,7 +266,7 @@ public class Enemy extends GameEntity {
                 value += 3;
                 break;
             case BossEnemy:
-                armor += level*30;
+                armor += level*40;
                 value += 10;
                 break;
         }

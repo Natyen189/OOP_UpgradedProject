@@ -3,6 +3,7 @@ package TowerDefense.GameEntity.Player;
 import TowerDefense.Button.TowerButton;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameStage;
+import TowerDefense.MusicContainer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,9 +21,10 @@ public class PlayerStats {
     public static int health = 20;
     public static int money = 1000;
     public static boolean restart = false;
-    Text level;
-    Text lives;
-    Text playerMoney;
+    private static HighScore playerScore;
+    private Text level;
+    private Text lives;
+    private Text playerMoney;
 
     public PlayerStats() {
         createPlayerLabel();
@@ -83,6 +85,7 @@ public class PlayerStats {
         Timeline restartTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             if(health == 0 && !restart) {
                 try {
+                    GameStage.gameOverPane.getChildren().remove(playerScore);
                     HighScore.writeScore();
                     updateHighScore();
                 } catch (IOException e) {
@@ -99,8 +102,8 @@ public class PlayerStats {
     }
 
     private static void updateHighScore() throws IOException {
-        HighScore test = new HighScore();
-        GameStage.gameOverPane.getChildren().add(test);
+        playerScore = new HighScore();
+        GameStage.gameOverPane.getChildren().add(playerScore);
     }
 
     private static void switchToGameOverScene() {
@@ -113,6 +116,9 @@ public class PlayerStats {
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
         timeline.play();
+
+        MusicContainer.mainTrack.stop();
+        MusicContainer.lostTrack.play();
     }
 
     private static void switchToMainScene() {
@@ -125,6 +131,9 @@ public class PlayerStats {
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
         timeline.play();
+
+        MusicContainer.lostTrack.stop();
+        MusicContainer.playMainMusic();
     }
 
     private static void cleanUp() {

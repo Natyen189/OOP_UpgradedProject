@@ -2,6 +2,7 @@ package TowerDefense.GameEntity.Player.PlayerSpecial;
 
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Player.PlayerStats;
+import TowerDefense.MusicContainer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,6 +33,7 @@ public abstract class PlayerSpecial extends VBox {
             this.setEffect(new Glow());
             countdownBar.setVisible(true);
             specialDescription.setVisible(true);
+            MusicContainer.clickSpecialSound.play();
         });
 
          setOnMouseExited(event -> {
@@ -39,6 +41,7 @@ public abstract class PlayerSpecial extends VBox {
              this.setEffect(null);
              countdownBar.setVisible(false);
              specialDescription.setVisible(false);
+             MusicContainer.clickSpecialSound.stop();
          });
 
      }
@@ -66,7 +69,7 @@ public abstract class PlayerSpecial extends VBox {
          reset.play();
      }
 
-     public void resetToDefaultValue() {
+     private void resetToDefaultValue() {
         Timeline resetTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if(PlayerStats.restart) {
                 countdownBar.setProgress(1);

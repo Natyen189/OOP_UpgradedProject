@@ -4,6 +4,7 @@ import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameStage;
+import TowerDefense.MusicContainer;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -37,11 +38,14 @@ public class MenuButton extends GameButton {
 
         switch (buttonName) {
             case PlayButton:
-                /*Gọi quân địch và ẩn nút "Play" khi ấn chuột vào*/
+                /*Gọi quân địch khi ấn chuột vào nút "Play"*/
                 setOnMouseClicked(mouseEvent -> {
                     setDisable(true);
                     setOpacity(0);
                     startGame = true;
+
+                    MusicContainer.menuTrack.stop();
+                    MusicContainer.playMainMusic();
                 });
                 break;
 

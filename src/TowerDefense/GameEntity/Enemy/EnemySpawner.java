@@ -14,6 +14,7 @@ public class EnemySpawner extends Pane {
     public static int level = 0;
     public static ArrayList<Enemy> enemies = new ArrayList<>();
     public static Timeline timeline;
+    private EnemySpecial enemySpecial;
 
     public EnemySpawner() {
     }
@@ -145,13 +146,16 @@ public class EnemySpawner extends Pane {
     }
 
     private void castEnemySpecial(int numberOfTarget, int numberOfLoop) {
-        EnemySpecial test = new EnemySpecial();
+        enemySpecial = new EnemySpecial();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            test.cast(numberOfTarget);
+            enemySpecial.cast(numberOfTarget);
         }));
         timeline.setCycleCount(numberOfLoop);
         timeline.setAutoReverse(false);
+        timeline.setOnFinished(event -> {
+            enemySpecial = null;
+        });
         timeline.play();
     }
 }

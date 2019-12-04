@@ -18,7 +18,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.File;
 
 public class GameStage {
@@ -50,7 +49,7 @@ public class GameStage {
         return gameStage;
     }
 
-    public void createGameOverScene() {
+    private void createGameOverScene() {
         File file = new File("Asset\\GameOver.jpg");
         ImageView gameOverBackground = new ImageView(new Image(file.toURI().toString()));
         gameOverBackground.setFitWidth(1540);
@@ -75,13 +74,14 @@ public class GameStage {
 
     }
 
-    public void setBackgroundImage() {
+    private void setBackgroundImage() {
         File backGroundLocation = new File("Asset\\Background.png");
         ImageView background = new ImageView(backGroundLocation.toURI().toString());
         background.setFitHeight(800);
         background.setPreserveRatio(true);
         mainWindowPane.getChildren().add(background);
 
+        MusicContainer.playMenuMusic();
     }
 
     private void createButton() {
@@ -184,14 +184,13 @@ public class GameStage {
         mainWindowPane.getChildren().add(tower6);
     }
 
-    public void createEnemy() {
+    private void createEnemy() {
 
         /*Gọi quân địch*/
         EnemySpawner enemySpawner = new EnemySpawner();
-        mainWindowPane.getChildren().add(enemySpawner);
 
-        /*Khoảng cách giữa 2 wave là 6 giây*/
-        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(20), event-> {
+        /*Khoảng cách giữa 2 wave là 17 giây*/
+        Timeline enemyTimeline  = new Timeline(new KeyFrame(Duration.seconds(17), event-> {
             if(MenuButton.startGame) {
                 /*Tạo quân địch dựa trên level*/
                 if(EnemySpawner.enemies != null) {

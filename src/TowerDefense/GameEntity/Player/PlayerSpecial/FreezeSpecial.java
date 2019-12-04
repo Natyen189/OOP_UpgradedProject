@@ -4,6 +4,7 @@ import TowerDefense.Button.MenuButton;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameStage;
+import TowerDefense.MusicContainer;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -50,6 +51,8 @@ public class FreezeSpecial extends PlayerSpecial {
                     EnemySpawner.enemies.get(i).pathTransition.pause();
                     countdownBar.setProgress(0);
                 }
+                MusicContainer.freezeSound.stop();
+                MusicContainer.freezeSound.play();
 
                 Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(7), displayEvent -> {
                     actionText.setVisible(false);

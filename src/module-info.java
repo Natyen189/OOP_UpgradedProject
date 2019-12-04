@@ -6,5 +6,7 @@ module OOP {
     requires javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
+    requires javafx.web;
 
 }

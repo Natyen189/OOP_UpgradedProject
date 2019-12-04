@@ -6,6 +6,7 @@ import TowerDefense.GameEntity.Player.PlayerStats;
 import TowerDefense.GameTile.Tower.Tower;
 import TowerDefense.GameStage;
 import TowerDefense.GameTile.Tower.TowerStats;
+import TowerDefense.MusicContainer;
 import javafx.event.EventHandler;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -69,11 +70,13 @@ public class TowerButton extends GameEntity {
             }
             setEffect(new Glow());
             towerStats.toggleStat(true);
+            MusicContainer.clickSound.play();
         });
 
         setOnMouseExited(mouseEvent -> {
             setEffect(null);
             towerStats.toggleStat(false);
+            MusicContainer.clickSound.stop();
         });
     }
 

@@ -53,10 +53,6 @@ public class HighScore extends VBox {
         test.close();
 
         Collections.sort(score, Collections.reverseOrder());
-
-//        for(int i = 0; i < score.size(); i++) {
-//            System.out.println(score.get(i));
-//        }
     }
 
     public static void writeScore() throws IOException {

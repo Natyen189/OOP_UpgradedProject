@@ -2,6 +2,7 @@ package TowerDefense.Button;
 
 import TowerDefense.Config;
 import TowerDefense.GameStage;
+import TowerDefense.MusicContainer;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -33,7 +34,8 @@ public class GuideButton extends GameButton {
                 goOut.playFromStart();
                 clicked = false;
             }
-
+            MusicContainer.clickSpecialSound.stop();
+            MusicContainer.clickSpecialSound.play();
         });
     }
 

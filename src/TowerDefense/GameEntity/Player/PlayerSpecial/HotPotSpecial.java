@@ -4,6 +4,7 @@ import TowerDefense.Button.MenuButton;
 import TowerDefense.Config;
 import TowerDefense.GameEntity.Enemy.EnemySpawner;
 import TowerDefense.GameStage;
+import TowerDefense.MusicContainer;
 import javafx.animation.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -83,6 +84,8 @@ public class HotPotSpecial extends PlayerSpecial {
                 displayText();
                 System.out.println("Casting Hotpot.");
                 canCastSpecial = false;
+                MusicContainer.hotPotsound.stop();
+                MusicContainer.hotPotsound.play();
 
                 Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(5), displayEvent -> {
                     actionText.setVisible(false);
@@ -133,10 +136,12 @@ public class HotPotSpecial extends PlayerSpecial {
         test.setPreserveRatio(true);
         test.setLayoutX(Config.TILE_SIZE*3);
         test.setLayoutY(-Config.TILE_SIZE*2);
-        test.setLayoutY(0);
         GameStage.mainWindowPane.getChildren().add(test);
 
-        Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(0.07), event -> test.setImage(explode[frame++])));
+        Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(0.07), event -> {
+            if(frame < 17)
+            test.setImage(explode[frame++]);
+        }));
         displayTimeline.setCycleCount(explode.length);
         displayTimeline.setAutoReverse(false);
         displayTimeline.setOnFinished(event-> {

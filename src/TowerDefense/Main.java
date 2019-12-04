@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         GameStage gameWindow = new GameStage();
         primaryStage = gameWindow.getState();
         primaryStage.setResizable(true);
