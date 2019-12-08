@@ -9,7 +9,7 @@ public class SellButton extends GameButton {
         sellTower();
     }
 
-    public void sellTower() {
+    private void sellTower() {
         setOnMouseClicked(event -> {
             for(int i = 0; i < TowerButton.towerList.size(); i++) {
                 if(TowerButton.towerList.get(i).isSelected) {

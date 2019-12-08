@@ -24,11 +24,8 @@ public class EnemySpecial extends Pane {
 
     private ImageView []imageView;
     private ArrayList<Tower> targetTower;
-    private Image[] explode = new Image[17];
-    private int frame = 0;
 
     public EnemySpecial() {
-        loadGif();
     }
 
     private void loadImage(int numberOfTarget) {
@@ -78,7 +75,6 @@ public class EnemySpecial extends Pane {
         movePath.setAutoReverse(false);
         movePath.setCycleCount(1);
         movePath.setOnFinished(event -> {
-            displayExplosion(target.getLayoutX(), target.getLayoutY());
             OnDestroy(image);
             destroyTower(target);
         });
@@ -99,47 +95,4 @@ public class EnemySpecial extends Pane {
         }
     }
 
-    private void loadGif() {
-
-        explode[0] = (new Image("file:Asset\\Explode\\10000.png"));
-        explode[1] = (new Image("file:Asset\\Explode\\10001.png"));
-        explode[2] = (new Image("file:Asset\\Explode\\10002.png"));
-        explode[3] = (new Image("file:Asset\\Explode\\10003.png"));
-        explode[4] = (new Image("file:Asset\\Explode\\10004.png"));
-        explode[5] = (new Image("file:Asset\\Explode\\10005.png"));
-        explode[6] = (new Image("file:Asset\\Explode\\10006.png"));
-        explode[7] = (new Image("file:Asset\\Explode\\10007.png"));
-        explode[8] = (new Image("file:Asset\\Explode\\10008.png"));
-        explode[9] = (new Image("file:Asset\\Explode\\10009.png"));;
-        explode[10] = (new Image("file:Asset\\Explode\\10010.png"));
-        explode[11] = (new Image("file:Asset\\Explode\\10011.png"));
-        explode[12] = (new Image("file:Asset\\Explode\\10012.png"));
-        explode[13] = (new Image("file:Asset\\Explode\\10013.png"));
-        explode[14] = (new Image("file:Asset\\Explode\\10014.png"));
-        explode[15] = (new Image("file:Asset\\Explode\\10015.png"));
-        explode[16] = (new Image("file:Asset\\Explode\\10016.png"));
-
-    }
-
-    private void displayExplosion(double xPos, double yPos) {
-
-        ImageView test = new ImageView();
-        test.setFitWidth(Config.TILE_SIZE);
-        test.setPreserveRatio(true);
-        test.setLayoutX(xPos);
-        test.setLayoutY(yPos);
-        GameStage.mainWindowPane.getChildren().add(test);
-
-        Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            if(frame < 17)
-            test.setImage(explode[frame++]);
-        }));
-        displayTimeline.setCycleCount(explode.length);
-        displayTimeline.setAutoReverse(false);
-        displayTimeline.setOnFinished(event-> {
-            GameStage.mainWindowPane.getChildren().remove(test);
-            frame = 0;
-        });
-        displayTimeline.play();
-    }
 }

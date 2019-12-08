@@ -42,9 +42,9 @@ public class Tower extends GameEntity {
     private TowerType currentType;
     private Timeline bulletTimeline = null;
     private Circle fireRange = null;
-    private double prevAngle = 0;
     public TowerStats towerStats;
     private MediaPlayer firingSound;
+    private double prevAngle = 0;
 
     public Tower(TowerType towerType) {
         loadImage(towerType);
@@ -308,6 +308,7 @@ public class Tower extends GameEntity {
         Line line = new Line();
         GameStage.mainWindowPane.getChildren().add(bullet);
 
+        /*Vẽ một đường thẳng từ tâm tháp tới tâm địch*/
         line.setStartX(this.getLayoutX() + this.getWidth()/ 2);
         line.setStartY(this.getLayoutY() + this.getHeight()/ 2);
         line.setEndX(targetEnemy.getXPos() + targetEnemy.getImageWidth()/2);
@@ -404,6 +405,8 @@ public class Tower extends GameEntity {
     }
 
     public void upgradeTower() {
+        if(TowerLevel > 1) TowerUpgradeCost += TowerValue;
+
         if((PlayerStats.money - TowerUpgradeCost >= 0) && (TowerLevel < 5)) {
             switch (currentType) {
                 case NormalTower:
@@ -426,8 +429,6 @@ public class Tower extends GameEntity {
                     break;
             }
 
-            if(TowerLevel > 1)
-            TowerUpgradeCost += TowerValue;
             TowerSellValue = TowerUpgradeCost/2;
             ShootRange += 5;
             fireRange.setRadius(ShootRange);

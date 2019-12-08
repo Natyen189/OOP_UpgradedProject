@@ -84,8 +84,7 @@ public class HotPotSpecial extends PlayerSpecial {
                 displayText();
                 System.out.println("Casting Hotpot.");
                 canCastSpecial = false;
-                MusicContainer.hotPotsound.stop();
-                MusicContainer.hotPotsound.play();
+                playsound();
 
                 Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(5), displayEvent -> {
                     actionText.setVisible(false);
@@ -149,6 +148,16 @@ public class HotPotSpecial extends PlayerSpecial {
             frame = 0;
         });
         displayTimeline.play();
+    }
+
+    private void playsound() {
+        MusicContainer.hotPotSound.play();
+        Timeline playTimeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> {
+            MusicContainer.hotPotSound.stop();
+        }));
+        playTimeline.setCycleCount(1);
+        playTimeline.setAutoReverse(false);
+        playTimeline.play();
     }
 
 }

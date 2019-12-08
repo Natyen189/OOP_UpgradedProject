@@ -47,12 +47,11 @@ public class FreezeSpecial extends PlayerSpecial {
                 displayText();
                 System.out.println("Casting Freezer.");
                 canCastSpecial = false;
+                playSound();
                 for(int i = 0; i < EnemySpawner.enemies.size(); i++) {
                     EnemySpawner.enemies.get(i).pathTransition.pause();
                     countdownBar.setProgress(0);
                 }
-                MusicContainer.freezeSound.stop();
-                MusicContainer.freezeSound.play();
 
                 Timeline displayTimeline = new Timeline(new KeyFrame(Duration.seconds(7), displayEvent -> {
                     actionText.setVisible(false);
@@ -105,5 +104,15 @@ public class FreezeSpecial extends PlayerSpecial {
         specialDescription.setOpacity(0.8);
         specialDescription.setViewOrder(-3);
         GameStage.mainWindowPane.getChildren().add(specialDescription);
+    }
+
+    private void playSound() {
+        MusicContainer.freezeSound.play();
+        Timeline playTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            MusicContainer.freezeSound.stop();
+        }));
+        playTimeline.setCycleCount(1);
+        playTimeline.setAutoReverse(false);
+        playTimeline.play();
     }
 }

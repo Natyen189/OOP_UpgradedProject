@@ -1,7 +1,6 @@
 package TowerDefense;
 
 import javafx.animation.Animation;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -28,7 +27,7 @@ public final class MusicContainer {
     public static final MediaPlayer playTowerSound = new MediaPlayer(new Media(placeTowerLocation.toURI().toString()));
 
     private static File hotPotLocation = new File("Asset\\Music\\HotPot.mp3");
-    public static final MediaPlayer hotPotsound = new MediaPlayer(new Media(hotPotLocation.toURI().toString()));
+    public static final MediaPlayer hotPotSound = new MediaPlayer(new Media(hotPotLocation.toURI().toString()));
 
     private static File freezeLocation = new File("Asset\\Music\\FreezeSpecial.mp3");
     public static final MediaPlayer freezeSound = new MediaPlayer(new Media(freezeLocation.toURI().toString()));

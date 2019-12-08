@@ -30,9 +30,7 @@ public abstract class GameEntity extends Pane {
 
     }
 
-    public void handleAnimation() {
-
-    }
+    public void handleAnimation() {}
 
     public boolean outOfHealth() {return false;}
 
